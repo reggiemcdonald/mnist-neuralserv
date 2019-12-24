@@ -6,7 +6,7 @@ public interface NumberImageDao {
 
     NumberImageDto findById(int id);
 
-    int insert(NumberImageDto dto);
+    int insert(int label);
 
 
 }

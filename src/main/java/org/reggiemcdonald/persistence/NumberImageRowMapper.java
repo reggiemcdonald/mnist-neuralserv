@@ -12,8 +12,7 @@ public class NumberImageRowMapper implements RowMapper<NumberImageDto> {
     public NumberImageDto mapRow(ResultSet resultSet, int i) throws SQLException {
         return new NumberImageDto(
                 resultSet.getInt("id"),
-                resultSet.getInt("label"),
-                resultSet.getString("url")
+                resultSet.getInt("label")
         );
     }
 }

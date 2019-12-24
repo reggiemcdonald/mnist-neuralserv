@@ -2,19 +2,19 @@ package org.reggiemcdonald.persistence;
 
 public class NumberImageDto {
 
-    private final int id;
+    private int id;
     private int label;
-    private String url;
 
-    public NumberImageDto(int _id, int _label, String _url) {
+    public NumberImageDto(int _id, int _label) {
         id = _id;
         label = _label;
-        url = _url;
     }
 
     public int getId() {
         return id;
     }
+
+    public void setId(int id) { this.id = id; }
 
     public int getLabel() {
         return label;
@@ -24,11 +24,4 @@ public class NumberImageDto {
         this.label = label;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
 }

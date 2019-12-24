@@ -15,7 +15,7 @@ public class NumberImageRepo implements NumberImageDao {
 
     NamedParameterJdbcTemplate template;
 
-    public final String INSERT = "INSERT INTO number_image(id, label, url) VALUES(:id, :label, :url)";
+    public final String INSERT = "INSERT INTO number_image(label) VALUES(:label)";
     public final String FIND = "SELECT * from number_image WHERE id=:id";
     private final String ID = "id";
     private final String LABEL = "label";
@@ -34,13 +34,11 @@ public class NumberImageRepo implements NumberImageDao {
     }
 
     @Override
-    public int insert(NumberImageDto dto) {
+    public int insert(int label) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         SqlParameterSource paramSource = new MapSqlParameterSource()
-                .addValue(ID, dto.getId())
-                .addValue(LABEL, dto.getLabel())
-                .addValue(URL, dto.getUrl());
-        template.update(INSERT, paramSource, keyHolder);
+                .addValue(LABEL, label);
+        template.update(INSERT, paramSource, keyHolder, new String[] { "id" });
         return keyHolder.getKey().intValue();
     }
 }

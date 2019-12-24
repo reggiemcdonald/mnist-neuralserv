@@ -6,5 +6,5 @@ public interface NumberImageService {
 
     NumberImageDto findById(int id);
 
-    int insert(NumberImageDto dto);
+    int insert(int label);
 }
