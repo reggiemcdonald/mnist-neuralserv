@@ -28,7 +28,9 @@ public class NumberImageRepo implements NumberImageDao {
 
     @Override
     public NumberImageDto findById(int id) {
-        return template.query(FIND, new NumberImageRowMapper()).iterator().next();
+        SqlParameterSource paramSource = new MapSqlParameterSource()
+                .addValue(ID, id);
+        return template.query(FIND, paramSource, new NumberImageRowMapper()).iterator().next();
     }
 
     @Override
