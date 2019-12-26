@@ -35,7 +35,7 @@ public class NumberImageController {
     @ResponseBody
     public ResponseEntity<Integer> postNumberImage(@RequestBody(required = true) Map<String, double[][]> body) throws Exception {
         final String VALUE_KEY = "image";
-        
+
         // TODO: Add custom exception
         if (!body.containsKey(VALUE_KEY))
             throw new Exception("No number image provided");
@@ -46,7 +46,7 @@ public class NumberImageController {
                 .propagate()
                 .output();
         int label = network.result(output);
-        int id = service.insert(label);
+        int id = service.insert(label, imageWeights);
         return ResponseEntity.ok(id);
     }
 }

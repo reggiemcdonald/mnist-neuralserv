@@ -7,7 +7,7 @@ public interface NumberImageDao {
 
     NumberImageDto findById(int id) throws NotFoundException;
 
-    int insert(int label);
+    int insert(int label, double[][] imageWeights);
 
 
 }

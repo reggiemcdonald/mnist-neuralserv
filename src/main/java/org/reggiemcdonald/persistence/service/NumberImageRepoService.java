@@ -19,7 +19,7 @@ public class NumberImageRepoService implements NumberImageService {
     }
 
     @Override
-    public int insert(int label) {
-        return dao.insert(label);
+    public int insert(int label, double[][] imageWeights) {
+        return dao.insert(label, imageWeights);
     }
 }
