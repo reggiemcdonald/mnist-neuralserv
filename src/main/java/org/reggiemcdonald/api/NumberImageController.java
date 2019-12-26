@@ -1,8 +1,10 @@
 package org.reggiemcdonald.api;
 
 import com.reggiemcdonald.neural.feedforward.net.Network;
+import org.reggiemcdonald.exception.NotFoundException;
 import org.reggiemcdonald.persistence.NumberImageDto;
 import org.reggiemcdonald.persistence.service.NumberImageService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
@@ -24,19 +26,16 @@ public class NumberImageController {
 
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public NumberImageDto getNumberImage(@PathVariable(value = "id") Integer id) throws Exception {
-        // TODO: Add custom exception
-        if (id == null)
-            throw new Exception("Missing param");
-
-        return service.findById(id);
+    public ResponseEntity<NumberImageDto> getNumberImage(@PathVariable(value = "id") Integer id) throws NotFoundException {
+        NumberImageDto dto = service.findById(id);
+        return ResponseEntity.ok(dto);
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
-    public int postNumberImage(@RequestBody Map<String, double[][]> body) throws Exception {
+    public ResponseEntity<Integer> postNumberImage(@RequestBody(required = true) Map<String, double[][]> body) throws Exception {
         final String VALUE_KEY = "image";
-
+        
         // TODO: Add custom exception
         if (!body.containsKey(VALUE_KEY))
             throw new Exception("No number image provided");
@@ -47,6 +46,7 @@ public class NumberImageController {
                 .propagate()
                 .output();
         int label = network.result(output);
-        return service.insert(label);
+        int id = service.insert(label);
+        return ResponseEntity.ok(id);
     }
 }

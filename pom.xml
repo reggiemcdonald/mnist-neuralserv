@@ -72,6 +72,13 @@
             <version>${rest.assured.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.reggiemcdonald</groupId>
+            <artifactId>new-neural-net-number-reader</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/new-neural-net-number-reader.jar</systemPath>
+        </dependency>
 
     </dependencies>
     <build>
