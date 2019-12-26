@@ -1,9 +1,11 @@
 package org.reggiemcdonald.api;
 
+import com.reggiemcdonald.neural.feedforward.net.Network;
 import org.reggiemcdonald.persistence.NumberImageDto;
 import org.reggiemcdonald.persistence.service.NumberImageService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.Map;
 
@@ -13,6 +15,13 @@ public class NumberImageController {
 
     @Resource
     NumberImageService service;
+    Network network;
+
+    @PostConstruct
+    public void initialize() {
+        network = Network.load("src/main/java/org/reggiemcdonald/api/network_state.nerl");
+    }
+
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public NumberImageDto getNumberImage(@PathVariable(value = "id") Integer id) throws Exception {
@@ -33,8 +42,11 @@ public class NumberImageController {
             throw new Exception("No number image provided");
 
         double[][] imageWeights = body.get(VALUE_KEY);
-        // TODO: Use learning library to classify digit
-
-        return service.insert(0);
+        double[] output = network
+                .input(imageWeights)
+                .propagate()
+                .output();
+        int label = network.result(output);
+        return service.insert(label);
     }
 }
