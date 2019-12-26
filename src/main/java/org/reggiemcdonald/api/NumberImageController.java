@@ -5,7 +5,6 @@ import org.reggiemcdonald.persistence.service.NumberImageService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
 import java.util.Map;
 
 @RestController
