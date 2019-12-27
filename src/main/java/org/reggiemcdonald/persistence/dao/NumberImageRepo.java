@@ -33,6 +33,7 @@ public class NumberImageRepo implements NumberImageDao {
     private final String ID = "id";
     private final String LABEL = "label";
     private final String IMAGE_WEIGHTS = "image_weights";
+    private final String EXECTED_LABEL = "expected_label";
 
     @Autowired
     public NumberImageRepo(NamedParameterJdbcTemplate _template, JdbcTemplate _jdbcTemplate) {
@@ -51,23 +52,17 @@ public class NumberImageRepo implements NumberImageDao {
     }
 
     @Override
-    public int insert(int label, double[][] imageWeights) {
+    public int insert(int label, Integer expectedLabel, Double[][] imageWeights) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         SqlParameterSource paramSource = new MapSqlParameterSource()
                 .addValue(LABEL, label)
+                .addValue(EXECTED_LABEL, expectedLabel)
                 .addValue(IMAGE_WEIGHTS, createArrayOf(imageWeights));
         template.update(INSERT, paramSource, keyHolder, new String[] { "id" });
         return keyHolder.getKey().intValue();
     }
 
-    private Array createArrayOf(double[][] arr) {
-        Double[][] darr = new Double[arr.length][];
-        for (int i = 0 ; i < arr.length ; i++) {
-            Double[] row = new Double[arr[i].length];
-            darr[i] = row;
-            for (int j = 0; j < row.length; j++)
-                row[j] = arr[i][j];
-        }
+    private Array createArrayOf(Double[][] darr) {
         try {
             Array sqlArray = jdbcTemplate
                     .getDataSource()

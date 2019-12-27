@@ -1,6 +1,7 @@
 package org.reggiemcdonald.api;
 
 import com.reggiemcdonald.neural.feedforward.net.Network;
+import org.reggiemcdonald.api.model.NumberImageApiModel;
 import org.reggiemcdonald.exception.NotFoundException;
 import org.reggiemcdonald.persistence.NumberImageDto;
 import org.reggiemcdonald.persistence.service.NumberImageService;
@@ -31,22 +32,31 @@ public class NumberImageController {
         return ResponseEntity.ok(dto);
     }
 
+    /**
+     * Takes a post request with the following json
+     * {
+     *     expectedLabel: int | null
+     *     image: double[][]
+     * }
+     * @param body
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
-    public ResponseEntity<Integer> postNumberImage(@RequestBody(required = true) Map<String, double[][]> body) throws Exception {
-        final String VALUE_KEY = "image";
+    public ResponseEntity<Integer> postNumberImage(@RequestBody NumberImageApiModel model) throws Exception {
 
-        // TODO: Add custom exception
-        if (!body.containsKey(VALUE_KEY))
-            throw new Exception("No number image provided");
+        Integer expectedLabel = model.getExpectedLabel();
+        double[][] imageWeights = model.getImage();
+        Double[][] dImageWeights = model.toDoulbeArray();
 
-        double[][] imageWeights = body.get(VALUE_KEY);
         double[] output = network
                 .input(imageWeights)
                 .propagate()
                 .output();
+
         int label = network.result(output);
-        int id = service.insert(label, imageWeights);
+        int id = service.insert(label, expectedLabel, dImageWeights);
         return ResponseEntity.ok(id);
     }
 }
