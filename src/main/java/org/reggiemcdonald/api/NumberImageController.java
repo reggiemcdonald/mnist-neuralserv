@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.util.Map;
 
 @RestController
@@ -38,18 +39,17 @@ public class NumberImageController {
      *     expectedLabel: int | null
      *     image: double[][]
      * }
-     * @param body
+     * @param model
      * @return
      * @throws Exception
      */
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
-    public ResponseEntity<Integer> postNumberImage(@RequestBody NumberImageApiModel model) throws Exception {
+    public ResponseEntity<Integer> postNumberImage(@Valid @RequestBody NumberImageApiModel model) throws Exception {
 
         Integer expectedLabel = model.getExpectedLabel();
         double[][] imageWeights = model.getImage();
         Double[][] dImageWeights = model.toDoulbeArray();
-
         double[] output = network
                 .input(imageWeights)
                 .propagate()

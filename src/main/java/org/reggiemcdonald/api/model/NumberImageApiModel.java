@@ -1,7 +1,19 @@
 package org.reggiemcdonald.api.model;
 
+import lombok.Data;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+
+
 public class NumberImageApiModel {
+
+    @NotEmpty
     private double[][] image;
+
+    @Min(value = 0)
+    @Max(value = 9)
     private Integer expectedLabel;
 
     public double[][] getImage() {
