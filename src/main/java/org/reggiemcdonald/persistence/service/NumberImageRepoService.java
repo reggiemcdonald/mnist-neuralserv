@@ -2,7 +2,7 @@ package org.reggiemcdonald.persistence.service;
 
 import org.reggiemcdonald.exception.NotFoundException;
 import org.reggiemcdonald.persistence.dao.NumberImageDao;
-import org.reggiemcdonald.persistence.NumberImageDto;
+import org.reggiemcdonald.persistence.dto.NumberImageDto;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;

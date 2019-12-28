@@ -1,7 +1,7 @@
 package org.reggiemcdonald.persistence.service;
 
 import org.reggiemcdonald.exception.NotFoundException;
-import org.reggiemcdonald.persistence.NumberImageDto;
+import org.reggiemcdonald.persistence.dto.NumberImageDto;
 
 public interface NumberImageService {
 

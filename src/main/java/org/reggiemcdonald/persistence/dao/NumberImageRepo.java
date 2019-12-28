@@ -1,26 +1,20 @@
 package org.reggiemcdonald.persistence.dao;
 
 import org.reggiemcdonald.exception.NotFoundException;
-import org.reggiemcdonald.persistence.NumberImageDto;
+import org.reggiemcdonald.persistence.dto.NumberImageDto;
 import org.reggiemcdonald.persistence.NumberImageRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.jdbc.support.SqlValue;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Array;
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Types;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class NumberImageRepo implements NumberImageDao {
@@ -28,7 +22,7 @@ public class NumberImageRepo implements NumberImageDao {
     NamedParameterJdbcTemplate template;
     JdbcTemplate jdbcTemplate;
 
-    public final String INSERT = "INSERT INTO number_image(label, image_weights) VALUES(:label, :image_weights)";
+    public final String INSERT = "INSERT INTO number_image(label, expected_label, image_weights) VALUES(:label, :expected_label, :image_weights)";
     public final String FIND = "SELECT * from number_image WHERE id=:id";
     private final String ID = "id";
     private final String LABEL = "label";

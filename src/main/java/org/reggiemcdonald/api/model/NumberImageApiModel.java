@@ -1,27 +1,30 @@
 package org.reggiemcdonald.api.model;
 
-import lombok.Data;
-import org.hibernate.validator.constraints.NotEmpty;
-
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-
+import org.reggiemcdonald.persistence.dto.NumberImageDto;
 
 public class NumberImageApiModel {
 
-    @NotEmpty
-    private double[][] image;
-
-    @Min(value = 0)
-    @Max(value = 9)
+    private final int id;
+    private int label;
     private Integer expectedLabel;
+    private Double[][] imageWeights;
 
-    public double[][] getImage() {
-        return image;
+    public NumberImageApiModel(NumberImageDto dto) {
+        id = dto.getId();
+        label = dto.getLabel();
+        expectedLabel = dto.getExpectedLabel();
+        imageWeights = dto.getImageWeights();
     }
 
-    public void setImage(double[][] image) {
-        this.image = image;
+    public NumberImageApiModel(int _id, int _label, Integer _expectedLabel, Double[][] _imageWeights) {
+        id = _id;
+        label = _label;
+        expectedLabel = _expectedLabel;
+        imageWeights = _imageWeights;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public Integer getExpectedLabel() {
@@ -32,14 +35,19 @@ public class NumberImageApiModel {
         this.expectedLabel = expectedLabel;
     }
 
-    public Double[][] toDoulbeArray() {
-        Double[][] darr = new Double[image.length][];
-        for (int i = 0 ; i < image.length ; i++) {
-            Double[] row = new Double[image[i].length];
-            darr[i] = row;
-            for (int j = 0; j < row.length; j++)
-                row[j] = image[i][j];
-        }
-        return darr;
+    public int getLabel() {
+        return label;
+    }
+
+    public void setLabel(int label) {
+        this.label = label;
+    }
+
+    public Double[][] getImageWeights() {
+        return imageWeights;
+    }
+
+    public void setImageWeights(Double[][] imageWeights) {
+        this.imageWeights = imageWeights;
     }
 }
