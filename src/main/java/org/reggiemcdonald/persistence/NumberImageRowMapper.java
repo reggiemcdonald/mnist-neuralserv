@@ -15,6 +15,7 @@ public class NumberImageRowMapper implements RowMapper<NumberImageDto> {
         Double[][] image_weights = (Double[][]) array.getArray();
         return new NumberImageDto(
                 resultSet.getInt("id"),
+                resultSet.getInt("session_id"),
                 resultSet.getInt("label"),
                 (Integer) resultSet.getObject("expected_label"),
                 image_weights

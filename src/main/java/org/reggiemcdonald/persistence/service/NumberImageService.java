@@ -7,5 +7,5 @@ public interface NumberImageService {
 
     NumberImageDto findById(int id) throws NotFoundException;
 
-    int insert(int label, Integer expectedLabel, Double[][] imageWeights);
+    int insert(int sessionId, int label, Integer expectedLabel, Double[][] imageWeights);
 }

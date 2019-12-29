@@ -60,7 +60,8 @@ public class NumberImageController {
                 .output();
 
         int label = network.result(output);
-        int id = service.insert(label, expectedLabel, dImageWeights);
+        int testSessionId = 0; // TODO: Remove this
+        int id = service.insert(testSessionId, label, expectedLabel, dImageWeights);
         return ResponseEntity.ok(id);
     }
 }

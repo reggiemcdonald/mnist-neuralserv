@@ -22,9 +22,10 @@ public class NumberImageRepo implements NumberImageDao {
     NamedParameterJdbcTemplate template;
     JdbcTemplate jdbcTemplate;
 
-    public final String INSERT = "INSERT INTO number_image(label, expected_label, image_weights) VALUES(:label, :expected_label, :image_weights)";
+    public final String INSERT = "INSERT INTO number_image(session_id, label, expected_label, image_weights) VALUES(:sessionId, :label, :expected_label, :image_weights)";
     public final String FIND = "SELECT * from number_image WHERE id=:id";
     private final String ID = "id";
+    private final String SESSION_ID = "session_id";
     private final String LABEL = "label";
     private final String IMAGE_WEIGHTS = "image_weights";
     private final String EXECTED_LABEL = "expected_label";
@@ -46,7 +47,7 @@ public class NumberImageRepo implements NumberImageDao {
     }
 
     @Override
-    public int insert(int label, Integer expectedLabel, Double[][] imageWeights) {
+    public int insert(int sessionId, int label, Integer expectedLabel, Double[][] imageWeights) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         SqlParameterSource paramSource = new MapSqlParameterSource()
                 .addValue(LABEL, label)
