@@ -1,10 +1,15 @@
 package org.reggiemcdonald.persistence.service;
 
-import org.reggiemcdonald.persistence.NumberImageDto;
+import org.reggiemcdonald.exception.NumberImageNotFoundException;
+import org.reggiemcdonald.persistence.dto.NumberImageDto;
+
+import java.util.List;
 
 public interface NumberImageService {
 
-    NumberImageDto findById(int id);
+    List<NumberImageDto> findBySession(int sessionId, int offset);
 
-    int insert(NumberImageDto dto);
+    NumberImageDto findById(int id) throws NumberImageNotFoundException;
+
+    int insert(int sessionId, int label, Integer expectedLabel, Double[][] imageWeights);
 }
