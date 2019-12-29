@@ -1,6 +1,7 @@
 package org.reggiemcdonald.api.advice;
 
 import org.reggiemcdonald.exception.NotFoundException;
+import org.reggiemcdonald.exception.NumberImageNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;

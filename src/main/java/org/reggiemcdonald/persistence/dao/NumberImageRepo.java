@@ -1,6 +1,6 @@
 package org.reggiemcdonald.persistence.dao;
 
-import org.reggiemcdonald.exception.NotFoundException;
+import org.reggiemcdonald.exception.NumberImageNotFoundException;
 import org.reggiemcdonald.persistence.dto.NumberImageDto;
 import org.reggiemcdonald.persistence.NumberImageRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +22,18 @@ public class NumberImageRepo implements NumberImageDao {
     NamedParameterJdbcTemplate template;
     JdbcTemplate jdbcTemplate;
 
-    public final String INSERT = "INSERT INTO number_image(session_id, label, expected_label, image_weights) VALUES(:sessionId, :label, :expected_label, :image_weights)";
-    public final String FIND = "SELECT * from number_image WHERE id=:id";
+    private final String INSERT = "INSERT INTO number_image(session_id, label, expected_label, image_weights) VALUES(:session_id, :label, :expected_label, :image_weights)";
+    private final String FIND_BY_ID = "SELECT * from number_image WHERE id=:id";
+    private final String FIND_BY_SESSION_ID = "SELECT * FROM number_image WHERE session_id=:session_id LIMIT :limit OFFSET :offset";
     private final String ID = "id";
     private final String SESSION_ID = "session_id";
     private final String LABEL = "label";
     private final String IMAGE_WEIGHTS = "image_weights";
     private final String EXECTED_LABEL = "expected_label";
+    private final String LIMIT = "limit";
+    private final String OFFSET = "offset";
+
+    private final int PAGE_LIMIT = 1;
 
     @Autowired
     public NumberImageRepo(NamedParameterJdbcTemplate _template, JdbcTemplate _jdbcTemplate) {
@@ -37,12 +42,23 @@ public class NumberImageRepo implements NumberImageDao {
     }
 
     @Override
-    public NumberImageDto findById(int id) throws NotFoundException {
+    public List<NumberImageDto> findBySession(int sessionId, int page) {
+        int offset = PAGE_LIMIT * page;
+        SqlParameterSource paramSource = new MapSqlParameterSource()
+                .addValue(SESSION_ID, sessionId)
+                .addValue(LIMIT, PAGE_LIMIT)
+                .addValue(OFFSET, offset);
+        List<NumberImageDto> list = template.query(FIND_BY_SESSION_ID, paramSource, new NumberImageRowMapper());
+        return list;
+    }
+
+    @Override
+    public NumberImageDto findById(int id) throws NumberImageNotFoundException {
         SqlParameterSource paramSource = new MapSqlParameterSource()
                 .addValue(ID, id);
-        List<NumberImageDto> list = template.query(FIND, paramSource, new NumberImageRowMapper());
+        List<NumberImageDto> list = template.query(FIND_BY_ID, paramSource, new NumberImageRowMapper());
         if (list.isEmpty())
-            throw new NotFoundException(id);
+            throw new NumberImageNotFoundException(id);
         return list.iterator().next();
     }
 
@@ -50,6 +66,7 @@ public class NumberImageRepo implements NumberImageDao {
     public int insert(int sessionId, int label, Integer expectedLabel, Double[][] imageWeights) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         SqlParameterSource paramSource = new MapSqlParameterSource()
+                .addValue(SESSION_ID, sessionId)
                 .addValue(LABEL, label)
                 .addValue(EXECTED_LABEL, expectedLabel)
                 .addValue(IMAGE_WEIGHTS, createArrayOf(imageWeights));

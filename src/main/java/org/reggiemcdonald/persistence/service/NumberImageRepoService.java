@@ -1,11 +1,12 @@
 package org.reggiemcdonald.persistence.service;
 
-import org.reggiemcdonald.exception.NotFoundException;
+import org.reggiemcdonald.exception.NumberImageNotFoundException;
 import org.reggiemcdonald.persistence.dao.NumberImageDao;
 import org.reggiemcdonald.persistence.dto.NumberImageDto;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Component
 public class NumberImageRepoService implements NumberImageService {
@@ -14,7 +15,12 @@ public class NumberImageRepoService implements NumberImageService {
     NumberImageDao dao;
 
     @Override
-    public NumberImageDto findById(int id) throws NotFoundException {
+    public List<NumberImageDto> findBySession(int sessionId, int offset) {
+        return dao.findBySession(sessionId, offset);
+    }
+
+    @Override
+    public NumberImageDto findById(int id) throws NumberImageNotFoundException {
         return dao.findById(id);
     }
 

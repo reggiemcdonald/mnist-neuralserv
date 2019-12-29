@@ -3,7 +3,7 @@ package org.reggiemcdonald.api;
 import com.reggiemcdonald.neural.feedforward.net.Network;
 import org.reggiemcdonald.api.model.NumberImageApiModel;
 import org.reggiemcdonald.api.model.NumberImageRequestModel;
-import org.reggiemcdonald.exception.NotFoundException;
+import org.reggiemcdonald.exception.NumberImageNotFoundException;
 import org.reggiemcdonald.persistence.dto.NumberImageDto;
 import org.reggiemcdonald.persistence.service.NumberImageService;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.LinkedList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/number")
@@ -31,9 +33,21 @@ public class NumberImageController {
         }
     }
 
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<NumberImageApiModel>> getNumberImages(
+            @RequestParam(value = "sessionId") Integer sessionId,
+            @RequestParam(value = "page", required = false) Integer page) {
+        page = (page == null) ? 0 : page - 1;
+        List<NumberImageDto> dtos = service.findBySession(sessionId, page);
+        List<NumberImageApiModel> models = new LinkedList<>();
+        for (NumberImageDto dto : dtos)
+            models.add(new NumberImageApiModel(dto));
+        return ResponseEntity.ok(models);
+    }
+
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<NumberImageApiModel> getNumberImage(@PathVariable(value = "id") Integer id) throws NotFoundException {
+    public ResponseEntity<NumberImageApiModel> getNumberImage(@PathVariable(value = "id") Integer id) throws NumberImageNotFoundException {
         NumberImageDto dto = service.findById(id);
         return ResponseEntity.ok(new NumberImageApiModel(dto));
     }
