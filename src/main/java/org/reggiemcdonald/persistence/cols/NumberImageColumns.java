@@ -1,7 +1,5 @@
 package org.reggiemcdonald.persistence.cols;
 
-import com.reggiemcdonald.neural.feedforward.res.NumberImage;
-
 public enum NumberImageColumns {
 
     ID("ID"),
@@ -15,5 +13,9 @@ public enum NumberImageColumns {
         name = _name;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
 
 }

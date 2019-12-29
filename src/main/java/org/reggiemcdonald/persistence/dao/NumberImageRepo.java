@@ -1,6 +1,7 @@
 package org.reggiemcdonald.persistence.dao;
 
 import org.reggiemcdonald.exception.NumberImageNotFoundException;
+import org.reggiemcdonald.persistence.cols.NumberImageColumns;
 import org.reggiemcdonald.persistence.dto.NumberImageDto;
 import org.reggiemcdonald.persistence.NumberImageRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,18 +23,25 @@ public class NumberImageRepo implements NumberImageDao {
     NamedParameterJdbcTemplate template;
     JdbcTemplate jdbcTemplate;
 
-    private final String INSERT = "INSERT INTO number_image(session_id, label, expected_label, image_weights) VALUES(:session_id, :label, :expected_label, :image_weights)";
-    private final String FIND_BY_ID = "SELECT * from number_image WHERE id=:id";
-    private final String FIND_BY_SESSION_ID = "SELECT * FROM number_image WHERE session_id=:session_id LIMIT :limit OFFSET :offset";
-    private final String ID = "id";
-    private final String SESSION_ID = "session_id";
-    private final String LABEL = "label";
-    private final String IMAGE_WEIGHTS = "image_weights";
-    private final String EXECTED_LABEL = "expected_label";
+    // COLUMNS
+    private final String ID = NumberImageColumns.ID.toString();
+    private final String SESSION_ID = NumberImageColumns.SESSION_ID.toString();
+    private final String LABEL = NumberImageColumns.LABEL.toString();
+    private final String IMAGE_WEIGHTS = NumberImageColumns.IMAGE_WEIGHTS.toString();
+    private final String EXPECTED_LABEL = NumberImageColumns.EXPECTED_LABEL.toString();
+
+    // QUERY PARAMS
     private final String LIMIT = "limit";
     private final String OFFSET = "offset";
 
-    private final int PAGE_LIMIT = 1;
+    private final int PAGE_LIMIT = 100;
+
+    // SQL
+    private final String INSERT = String.format("INSERT INTO number_image(%s, %s, %s, %s) VALUES(:%s, :%s, :%s, :%s)",
+            SESSION_ID, LABEL, EXPECTED_LABEL, IMAGE_WEIGHTS, SESSION_ID, LABEL, EXPECTED_LABEL, IMAGE_WEIGHTS);
+    private final String FIND_BY_ID = String.format("SELECT * from number_image WHERE %s=:%s", ID, ID);
+    private final String FIND_BY_SESSION_ID = String.format("SELECT * FROM number_image WHERE %s=:%s LIMIT :%s OFFSET :%s",
+            SESSION_ID, SESSION_ID, LIMIT, OFFSET);
 
     @Autowired
     public NumberImageRepo(NamedParameterJdbcTemplate _template, JdbcTemplate _jdbcTemplate) {
@@ -68,7 +76,7 @@ public class NumberImageRepo implements NumberImageDao {
         SqlParameterSource paramSource = new MapSqlParameterSource()
                 .addValue(SESSION_ID, sessionId)
                 .addValue(LABEL, label)
-                .addValue(EXECTED_LABEL, expectedLabel)
+                .addValue(EXPECTED_LABEL, expectedLabel)
                 .addValue(IMAGE_WEIGHTS, createArrayOf(imageWeights));
         template.update(INSERT, paramSource, keyHolder, new String[] { "id" });
         return keyHolder.getKey().intValue();
