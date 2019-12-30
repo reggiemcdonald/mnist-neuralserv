@@ -9,7 +9,7 @@ public enum NumberImageColumns {
     IMAGE_WEIGHTS("image_weights");
 
     private String name;
-    private NumberImageColumns(String _name) {
+    NumberImageColumns(String _name) {
         name = _name;
     }
 
