@@ -6,6 +6,8 @@ import org.reggiemcdonald.api.model.NumberImageRequestModel;
 import org.reggiemcdonald.exception.NumberImageNotFoundException;
 import org.reggiemcdonald.persistence.dto.NumberImageDto;
 import org.reggiemcdonald.persistence.service.NumberImageService;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/number")
+//@ConditionalOnProperty(name = "api.isEnabled", havingValue = "true")
 public class NumberImageController {
 
     @Resource

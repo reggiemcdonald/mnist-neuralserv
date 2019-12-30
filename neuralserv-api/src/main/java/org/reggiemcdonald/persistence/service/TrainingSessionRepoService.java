@@ -1,5 +1,6 @@
 package org.reggiemcdonald.persistence.service;
 
+import org.reggiemcdonald.exception.TrainingSessionNotFoundException;
 import org.reggiemcdonald.persistence.dao.TrainingSessionDao;
 import org.reggiemcdonald.persistence.dto.TrainingSessionDto;
 
@@ -18,12 +19,12 @@ public class TrainingSessionRepoService implements TrainingSessionService {
     }
 
     @Override
-    public List<TrainingSessionDto> findByDate(Date trainingDate) {
-        return dao.findByDate(trainingDate);
+    public List<TrainingSessionDto> findByDate(Date startDate, Date endDate) {
+        return dao.findByDate(startDate, endDate);
     }
 
     @Override
-    public TrainingSessionDto findById(int id) {
+    public TrainingSessionDto findById(int id) throws TrainingSessionNotFoundException {
         return dao.findById(id);
     }
 }

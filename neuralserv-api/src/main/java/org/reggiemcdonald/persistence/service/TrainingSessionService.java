@@ -1,5 +1,6 @@
 package org.reggiemcdonald.persistence.service;
 
+import org.reggiemcdonald.exception.TrainingSessionNotFoundException;
 import org.reggiemcdonald.persistence.dto.TrainingSessionDto;
 
 import java.util.Date;
@@ -15,15 +16,16 @@ public interface TrainingSessionService {
 
     /**
      * Service for finding all training sessions within a particular date
-     * @param trainingDate
+     * @param startDate
+     * @param endDate
      * @return
      */
-    List<TrainingSessionDto> findByDate(Date trainingDate);
+    List<TrainingSessionDto> findByDate(Date startDate, Date endDate);
 
     /**
      * Service for finding a particular training session
      * @param id
      * @return
      */
-    TrainingSessionDto findById(int id);
+    TrainingSessionDto findById(int id) throws TrainingSessionNotFoundException;
 }
