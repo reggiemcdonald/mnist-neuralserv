@@ -1,5 +1,4 @@
-DROP TABLE IF EXISTS training_session;
-CREATE TABLE training_session (
+CREATE TABLE IF NOT EXISTS training_session (
     id serial primary key,
     internal_training_size integer not null,
     external_training_size integer not null,

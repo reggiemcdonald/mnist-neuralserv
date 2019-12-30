@@ -1,4 +1,4 @@
-package org.reggiemcdonald.api;
+package org.reggiemcdonald.api.controller;
 
 import com.reggiemcdonald.neural.feedforward.net.Network;
 import org.reggiemcdonald.api.model.NumberImageApiModel;
