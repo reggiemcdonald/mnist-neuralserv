@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/number")
-//@ConditionalOnProperty(name = "api.isEnabled", havingValue = "true")
+@ConditionalOnProperty(name = "api.isEnabled", havingValue = "true")
 public class NumberImageController {
 
     @Resource
