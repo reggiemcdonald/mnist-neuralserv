@@ -15,7 +15,7 @@ public class TrainingRequest implements Runnable {
     private static final String TEST_IMAGES = "/Users/reginaldmcdonald/Library/Application Support/reggiemcdonald/mnist-neuralserv/test_images.gz";
     private static final String TEST_LABELS = "/Users/reginaldmcdonald/Library/Application Support/reggiemcdonald/mnist-neuralserv/test_labels.gz";
 
-    private Logger logger = Logger.getLogger(TrainingRequest.class);
+    private static Logger logger = Logger.getLogger(TrainingRequest.class);
 
     private Network network;
     private TrainerController controller;
