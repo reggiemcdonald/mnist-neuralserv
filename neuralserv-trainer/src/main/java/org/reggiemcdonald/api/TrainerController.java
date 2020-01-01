@@ -55,10 +55,11 @@ public class TrainerController {
 
     public void onDone() {
         restartApiEndpoint();
-        System.out.println("DONE TRAINING");
+        System.out.println("DONE TRAINING"); // TODO: Remove
     }
 
     public void onDoneRequest(String uri) {
+        restartApiEndpoint();
         try {
             String response = restTemplate.postForObject(uri, null, String.class, new HashMap<>());
             System.out.println(response);
