@@ -54,6 +54,7 @@ public class TrainerController {
     }
 
     public void onDone() {
+        restartApiEndpoint();
         System.out.println("DONE TRAINING");
     }
 
@@ -64,5 +65,15 @@ public class TrainerController {
         } catch (HttpClientErrorException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    private void restartApiEndpoint() {
+        try {
+            final String uri = "http://localhost:8080/restart";
+            restTemplate.postForObject(uri, null, String.class);
+        } catch (HttpClientErrorException e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 }
