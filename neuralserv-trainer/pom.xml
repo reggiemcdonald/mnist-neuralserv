@@ -17,7 +17,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <start-class>org.reggiemcdonald.App</start-class>
+        <start-class>org.reggiemcdonald.TrainerApp</start-class>
         <java.version>1.8</java.version>
         <lombok.version>1.14.8</lombok.version>
         <log4jdbc.log4j2.version>1.16</log4jdbc.log4j2.version>
@@ -28,6 +28,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <version>2.2.0.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -64,6 +65,18 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.reggiemcdonald</groupId>
+            <artifactId>new-neural-net-number-reader</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/new-neural-net-number-reader.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>commons-validator</groupId>
+            <artifactId>commons-validator</artifactId>
+            <version>1.6</version>
         </dependency>
     </dependencies>
     <build>

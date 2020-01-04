@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/number")
-//@ConditionalOnProperty(name = "api.isEnabled", havingValue = "true")
+@ConditionalOnProperty(name = "api.isEnabled", havingValue = "true")
 public class NumberImageController {
 
     @Resource
@@ -29,7 +29,7 @@ public class NumberImageController {
     @PostConstruct
     public void initialize() {
         try {
-            network = Network.load("src/main/java/org/reggiemcdonald/api/network_state.nerl");
+            network = Network.load("/Library/Application Support/reggiemcdonald/mnist-neuralserv/network-state.nerl");
         } catch (Exception e) {
             // TODO: Update to retrain network and remove runtime exception
             throw new RuntimeException("Failed to load neural network");
