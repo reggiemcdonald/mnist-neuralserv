@@ -49,7 +49,7 @@ public class TrainingRequest implements Runnable {
         logger.info("Began running training protocol");
         List<NumberImage> trainingList = ImageLoader.load(Paths.get(TRAIN_IMAGES), Paths.get(TRAIN_LABELS));
         List<NumberImage> testingList = ImageLoader.load(Paths.get(TEST_IMAGES), Paths.get(TEST_LABELS));
-        network.learn(trainingList,epochs, batchSize, eta, verbose);
+        network.learn(trainingList, epochs, batchSize, eta, verbose);
         network.test(testingList);
         Network.save(network, NERL_FILE);
         logger.info("Training protocol has finished executing");
