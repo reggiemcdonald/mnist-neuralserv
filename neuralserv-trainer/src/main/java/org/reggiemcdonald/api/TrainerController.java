@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.concurrent.*;
 
 @RestController
-@RequestMapping("/trainer")
+@RequestMapping("/train")
 public class TrainerController {
 
     @Autowired
@@ -31,7 +31,7 @@ public class TrainerController {
                 new ThreadPoolExecutor(1, 10, 1, TimeUnit.MINUTES, new LinkedBlockingQueue<>(), handler);
     }
 
-    @RequestMapping(value = "/train", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<String> train(@Valid @RequestBody TrainerControllerRequestModel model) {
         Network network;
         Integer epochs = model.getEpochs();
