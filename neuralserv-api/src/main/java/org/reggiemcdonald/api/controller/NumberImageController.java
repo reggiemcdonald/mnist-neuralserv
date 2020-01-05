@@ -4,7 +4,6 @@ import com.reggiemcdonald.neural.feedforward.net.Network;
 import org.reggiemcdonald.api.model.NumberImageApiModel;
 import org.reggiemcdonald.api.model.NumberImagePutRequestModel;
 import org.reggiemcdonald.api.model.NumberImageRequestModel;
-import org.reggiemcdonald.exception.NotFoundException;
 import org.reggiemcdonald.exception.NumberImageNotFoundException;
 import org.reggiemcdonald.persistence.entity.NumberImageEntity;
 import org.reggiemcdonald.persistence.repo.NumberImageRepository;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.sql.PreparedStatement;
 import java.util.LinkedList;
 import java.util.List;
 
