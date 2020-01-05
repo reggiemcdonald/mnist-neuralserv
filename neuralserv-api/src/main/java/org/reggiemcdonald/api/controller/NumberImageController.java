@@ -2,7 +2,9 @@ package org.reggiemcdonald.api.controller;
 
 import com.reggiemcdonald.neural.feedforward.net.Network;
 import org.reggiemcdonald.api.model.NumberImageApiModel;
+import org.reggiemcdonald.api.model.NumberImagePutRequestModel;
 import org.reggiemcdonald.api.model.NumberImageRequestModel;
+import org.reggiemcdonald.exception.NotFoundException;
 import org.reggiemcdonald.exception.NumberImageNotFoundException;
 import org.reggiemcdonald.persistence.entity.NumberImageEntity;
 import org.reggiemcdonald.persistence.repo.NumberImageRepository;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -20,8 +24,8 @@ import java.util.List;
 public class NumberImageController {
 
     @Autowired
-    NumberImageRepository repository;
-    Network network;
+    private NumberImageRepository repository;
+    private Network network;
 
     @PostConstruct
     public void initialize() {
@@ -34,10 +38,9 @@ public class NumberImageController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<NumberImageApiModel>> getNumberImages(
-            @RequestParam(value = "sessionId") Integer sessionId,
-            @RequestParam(value = "page", required = false) Integer page) {
-        return null;
+    public ResponseEntity<List<NumberImageApiModel>> getNumberImages(@RequestParam(value = "sessionId") Long sessionId) {
+        List<NumberImageEntity> entities = repository.findBySessionId(sessionId);
+        return ResponseEntity.ok(toApiModel(entities));
     }
 
 
@@ -61,17 +64,52 @@ public class NumberImageController {
     @ResponseBody
     public ResponseEntity<NumberImageApiModel> postNumberImage(@Valid @RequestBody NumberImageRequestModel model) throws Exception {
         Integer expectedLabel = model.getExpectedLabel();
-        double[][] imageWeights = model.getImage();
         Double[][] dImageWeights = model.toDoubleArray();
-        double[] output = network
-                .input(imageWeights)
-                .propagate()
-                .output();
-
-        int label = network.result(output);
+        int label = classify(model);
         long testSessionId = 0L; // TODO: Remove this
         NumberImageEntity entity = new NumberImageEntity(testSessionId, label, expectedLabel, dImageWeights);
         repository.save(entity);
         return ResponseEntity.ok(new NumberImageApiModel(entity));
+    }
+
+    /**
+     * Takes a put request with the following json
+     * {
+     *     id: long,
+     *     expectedLabel: int | null
+     *     image: double[][]
+     * }
+     * @param model
+     * @return
+     * @throws NumberImageNotFoundException
+     */
+    @RequestMapping(method = RequestMethod.PUT, consumes = "application/json")
+    @ResponseBody
+    public ResponseEntity<NumberImageApiModel> putNumberImage(@Valid @RequestBody NumberImagePutRequestModel model)
+            throws NumberImageNotFoundException {
+        NumberImageEntity entity = repository.findById(model.getId());
+        if (entity == null)
+            throw new NumberImageNotFoundException(model.getId());
+        int label = classify(model);
+        entity.setImageWeights(model.toDoubleArray());
+        entity.setExpectedLabel(model.getExpectedLabel());
+        entity.setLabel(label);
+        repository.save(entity);
+        return ResponseEntity.ok(new NumberImageApiModel(entity));
+    }
+
+    private int classify(NumberImageRequestModel model) {
+        double[] output = network
+                .input(model.getImage())
+                .propagate()
+                .output();
+        return network.result(output);
+    }
+
+    private List<NumberImageApiModel> toApiModel(List<NumberImageEntity> entities) {
+        List<NumberImageApiModel> models = new LinkedList<>();
+        for (NumberImageEntity entity : entities)
+            models.add(new NumberImageApiModel(entity));
+        return models;
     }
 }

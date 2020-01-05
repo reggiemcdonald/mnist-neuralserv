@@ -11,20 +11,20 @@ public class NumberImageEntity {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Long id;
+    private Long id;
 
     @Column
-    Long sessionId;
+    private Long sessionId;
 
     @Column
-    Integer label;
+    private Integer label;
 
     @Column
-    Integer expectedLabel;
+    private Integer expectedLabel;
 
     @Column
     @Type(type = "org.reggiemcdonald.persistence.entity.type.TwoDimDoubleArrayUserType")
-    Double[][] imageWeights;
+    private Double[][] imageWeights;
 
     public NumberImageEntity() {}
 
@@ -62,12 +62,24 @@ public class NumberImageEntity {
         return label;
     }
 
+    public void setLabel(Integer label) {
+        this.label = label;
+    }
+
     public Integer getExpectedLabel() {
         return expectedLabel;
     }
 
+    public void setExpectedLabel(Integer expectedLabel) {
+        this.expectedLabel = expectedLabel;
+    }
+
     public Double[][] getImageWeights() {
         return imageWeights;
+    }
+
+    public void setImageWeights(Double[][] imageWeights) {
+        this.imageWeights = imageWeights;
     }
 
     @Override
