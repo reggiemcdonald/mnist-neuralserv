@@ -1,19 +1,19 @@
 package org.reggiemcdonald.api.model;
 
-import org.reggiemcdonald.persistence.dto.NumberImageDto;
+import org.reggiemcdonald.persistence.entity.NumberImageEntity;
 
 public class NumberImageApiModel {
 
-    private final int id;
+    private final long id;
     private int label;
     private Integer expectedLabel;
     private Double[][] imageWeights;
 
-    public NumberImageApiModel(NumberImageDto dto) {
-        id = dto.getId();
-        label = dto.getLabel();
-        expectedLabel = dto.getExpectedLabel();
-        imageWeights = dto.getImageWeights();
+    public NumberImageApiModel(NumberImageEntity dao) {
+        id = dao.getId();
+        label = dao.getLabel();
+        expectedLabel = dao.getExpectedLabel();
+        imageWeights = dao.getImageWeights();
     }
 
     public NumberImageApiModel(int _id, int _label, Integer _expectedLabel, Double[][] _imageWeights) {
@@ -23,7 +23,7 @@ public class NumberImageApiModel {
         imageWeights = _imageWeights;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
