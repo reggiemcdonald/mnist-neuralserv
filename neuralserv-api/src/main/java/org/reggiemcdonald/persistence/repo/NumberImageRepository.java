@@ -10,4 +10,5 @@ public interface NumberImageRepository extends CrudRepository<NumberImageEntity,
     NumberImageEntity findById(long id);
 
     List<NumberImageEntity> findBySessionId(long sessionId);
+
 }

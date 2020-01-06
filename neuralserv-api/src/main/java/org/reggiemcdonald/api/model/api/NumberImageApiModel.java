@@ -1,4 +1,4 @@
-package org.reggiemcdonald.api.model;
+package org.reggiemcdonald.api.model.api;
 
 import org.reggiemcdonald.persistence.entity.NumberImageEntity;
 

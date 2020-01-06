@@ -1,9 +1,9 @@
 package org.reggiemcdonald.api.controller;
 
 import com.reggiemcdonald.neural.feedforward.net.Network;
-import org.reggiemcdonald.api.model.NumberImageApiModel;
-import org.reggiemcdonald.api.model.NumberImagePutRequestModel;
-import org.reggiemcdonald.api.model.NumberImageRequestModel;
+import org.reggiemcdonald.api.model.api.NumberImageApiModel;
+import org.reggiemcdonald.api.model.request.NumberImagePutRequestModel;
+import org.reggiemcdonald.api.model.request.NumberImageRequestModel;
 import org.reggiemcdonald.exception.NumberImageNotFoundException;
 import org.reggiemcdonald.persistence.entity.NumberImageEntity;
 import org.reggiemcdonald.persistence.repo.NumberImageRepository;

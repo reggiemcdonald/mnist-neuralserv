@@ -1,4 +1,4 @@
-package org.reggiemcdonald.api.model;
+package org.reggiemcdonald.api.model.request;
 
 import org.hibernate.validator.constraints.NotEmpty;
 

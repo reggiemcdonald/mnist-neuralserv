@@ -1,5 +1,7 @@
 package org.reggiemcdonald.persistence.entity;
 
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -31,6 +33,17 @@ public class TrainingSessionEntity {
     @Column
     @Temporal(TemporalType.TIMESTAMP)
     private Date trainingDate;
+
+    public TrainingSessionEntity() {}
+
+    public TrainingSessionEntity(int _internalTrainingSize, int _externalTrainingSize, int _internalNumberCorrect,
+                                 int _externalNumberCorrect, Date _trainingDate) {
+        internalTrainingSize = _internalTrainingSize;
+        externalTrainingSize = _externalTrainingSize;
+        internalNumberCorrect = _internalNumberCorrect;
+        externalNumberCorrect = _externalNumberCorrect;
+        trainingDate = _trainingDate;
+    }
 
     public Long getId() {
         return id;

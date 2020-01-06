@@ -1,6 +1,5 @@
 package org.reggiemcdonald.persistence.entity;
 
-import com.reggiemcdonald.neural.feedforward.res.NumberImage;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -9,7 +8,6 @@ import javax.persistence.*;
 public class NumberImageEntity {
 
     @Id
-    @Column
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 

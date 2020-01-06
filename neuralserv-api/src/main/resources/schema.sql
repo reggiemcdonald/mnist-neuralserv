@@ -17,4 +17,11 @@ CREATE TABLE training_session (
     training_date timestamp not null
 );
 
+CREATE TABLE IF NOT EXISTS training_result (
+    number_image_id bigint NOT NULL,
+    training_session_id bigint NOT NULL,
+    correct boolean NOT NULL,
+    PRIMARY KEY (number_image_id, training_session_id)
+);
+
 CREATE SEQUENCE IF NOT EXISTS hibernate_sequence;
