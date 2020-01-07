@@ -1,23 +1,43 @@
-package org.reggiemcdonald.persistence.dto;
+package org.reggiemcdonald.persistence.entity;
 
-import java.sql.Timestamp;
+import lombok.NoArgsConstructor;
 
-public class TrainingSessionDto {
-    private int id;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.Date;
+
+@Entity
+@Table(name = "training_session")
+public class TrainingSessionEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @Column
+    @NotNull
     private int internalTrainingSize;
-    private int externalTrainingSize;
-    private int internalNumberCorrect;
-    private int externalNumberCorrect;
-    private Timestamp trainingDate;
 
-    public TrainingSessionDto(
-            int _id,
-            int _internalTrainingSize,
-            int _externalTrainingSize,
-            int _internalNumberCorrect,
-            int _externalNumberCorrect,
-            Timestamp _trainingDate) {
-        id =  _id;
+    @Column
+    @NotNull
+    private int externalTrainingSize;
+
+    @Column
+    @NotNull
+    private int internalNumberCorrect;
+
+    @Column
+    @NotNull
+    private int externalNumberCorrect;
+
+    @Column
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date trainingDate;
+
+    public TrainingSessionEntity() {}
+
+    public TrainingSessionEntity(int _internalTrainingSize, int _externalTrainingSize, int _internalNumberCorrect,
+                                 int _externalNumberCorrect, Date _trainingDate) {
         internalTrainingSize = _internalTrainingSize;
         externalTrainingSize = _externalTrainingSize;
         internalNumberCorrect = _internalNumberCorrect;
@@ -25,12 +45,8 @@ public class TrainingSessionDto {
         trainingDate = _trainingDate;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getInternalTrainingSize() {
@@ -65,11 +81,11 @@ public class TrainingSessionDto {
         this.externalNumberCorrect = externalNumberCorrect;
     }
 
-    public Timestamp getTrainingDate() {
+    public Date getTrainingDate() {
         return trainingDate;
     }
 
-    public void setTrainingDate(Timestamp trainingDate) {
+    public void setTrainingDate(Date trainingDate) {
         this.trainingDate = trainingDate;
     }
 }

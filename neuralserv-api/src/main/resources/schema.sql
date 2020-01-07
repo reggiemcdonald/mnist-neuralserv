@@ -1,16 +1,27 @@
-DROP TABLE IF EXISTS number_image, training_session;
-CREATE TABLE number_image (
-    id serial primary key,
-    session_id integer not null,
+DROP SEQUENCE IF EXISTS hibernate_sequence;
+DROP TABLE IF EXISTS number_image_entity, matrix_row_entity, training_session;
+
+CREATE TABLE number_image_entity (
+    id bigint primary key,
+    session_id bigint not null,
     label integer not null,
     expected_label integer,
     image_weights double precision[][]
 );
 CREATE TABLE training_session (
-    id serial primary key,
+    id bigint primary key,
     internal_training_size integer not null,
     external_training_size integer not null,
     internal_number_correct integer not null,
     external_number_correct integer not null,
     training_date timestamp not null
 );
+
+CREATE TABLE IF NOT EXISTS training_result (
+    number_image_id bigint NOT NULL,
+    training_session_id bigint NOT NULL,
+    correct boolean NOT NULL,
+    PRIMARY KEY (number_image_id, training_session_id)
+);
+
+CREATE SEQUENCE IF NOT EXISTS hibernate_sequence;

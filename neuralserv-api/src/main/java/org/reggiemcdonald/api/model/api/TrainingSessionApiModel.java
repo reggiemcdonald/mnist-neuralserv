@@ -1,29 +1,33 @@
-package org.reggiemcdonald.api.model;
+package org.reggiemcdonald.api.model.api;
 
-import org.reggiemcdonald.persistence.dto.TrainingSessionDto;
+import org.reggiemcdonald.persistence.entity.TrainingSessionEntity;
 
-import java.sql.Timestamp;
 import java.util.Date;
 
 public class TrainingSessionApiModel {
 
-    private int id;
+    private long id;
+
     private int internalTrainingSize;
+
     private int externalTrainingSize;
+
     private int internalNumberCorrect;
+
     private int externalNumberCorrect;
+
     private Date trainingDate;
 
-    public TrainingSessionApiModel(TrainingSessionDto dto) {
-        id = dto.getId();
-        internalTrainingSize = dto.getInternalTrainingSize();
-        externalTrainingSize = dto.getExternalTrainingSize();
-        internalNumberCorrect = dto.getInternalNumberCorrect();
-        externalNumberCorrect = dto.getExternalNumberCorrect();
-        trainingDate = new Date(dto.getTrainingDate().getTime());
+    public TrainingSessionApiModel(TrainingSessionEntity entity) {
+        id = entity.getId();
+        internalTrainingSize = entity.getInternalTrainingSize();
+        externalTrainingSize = entity.getExternalTrainingSize();
+        internalNumberCorrect = entity.getInternalNumberCorrect();
+        externalNumberCorrect = entity.getExternalNumberCorrect();
+        trainingDate = entity.getTrainingDate();
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
