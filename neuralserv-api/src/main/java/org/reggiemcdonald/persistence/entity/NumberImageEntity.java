@@ -22,7 +22,7 @@ public class NumberImageEntity {
 
     @Column
     @Type(type = "org.reggiemcdonald.persistence.entity.type.TwoDimDoubleArrayUserType")
-    private Double[][] imageWeights;
+    private double[][] imageWeights;
 
     public NumberImageEntity() {}
 
@@ -41,7 +41,7 @@ public class NumberImageEntity {
         expectedLabel = _expectedLabel;
     }
 
-    public NumberImageEntity(long _sessionId, int _label, int _expectedLabel, Double[][] _imageWeights) {
+    public NumberImageEntity(long _sessionId, int _label, int _expectedLabel, double[][] _imageWeights) {
         sessionId = _sessionId;
         label = _label;
         expectedLabel = _expectedLabel;
@@ -72,11 +72,11 @@ public class NumberImageEntity {
         this.expectedLabel = expectedLabel;
     }
 
-    public Double[][] getImageWeights() {
+    public double[][] getImageWeights() {
         return imageWeights;
     }
 
-    public void setImageWeights(Double[][] imageWeights) {
+    public void setImageWeights(double[][] imageWeights) {
         this.imageWeights = imageWeights;
     }
 
@@ -94,4 +94,5 @@ public class NumberImageEntity {
         NumberImageEntity other = (NumberImageEntity) o;
         return this.id.equals(other.id);
     }
+
 }

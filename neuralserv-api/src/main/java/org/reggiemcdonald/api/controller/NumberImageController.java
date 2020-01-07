@@ -9,6 +9,7 @@ import org.reggiemcdonald.persistence.entity.NumberImageEntity;
 import org.reggiemcdonald.persistence.repo.NumberImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
@@ -16,6 +17,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 @RestController
 @RequestMapping("/number")
@@ -23,6 +25,10 @@ public class NumberImageController {
 
     @Autowired
     private NumberImageRepository repository;
+
+    @Autowired
+    private ExecutorService executorService;
+
     private Network network;
 
     @PostConstruct
@@ -37,7 +43,7 @@ public class NumberImageController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<NumberImageApiModel>> getNumberImages(@RequestParam(value = "sessionId") Long sessionId) {
-        List<NumberImageEntity> entities = repository.findBySessionId(sessionId);
+        List<NumberImageEntity> entities = repository.findAllBySessionId(sessionId);
         return ResponseEntity.ok(toApiModel(entities));
     }
 
@@ -62,10 +68,10 @@ public class NumberImageController {
     @ResponseBody
     public ResponseEntity<NumberImageApiModel> postNumberImage(@Valid @RequestBody NumberImageRequestModel model) throws Exception {
         Integer expectedLabel = model.getExpectedLabel();
-        Double[][] dImageWeights = model.toDoubleArray();
+        double[][] imageWeights = model.getImage();
         int label = classify(model);
         long testSessionId = 0L; // TODO: Remove this
-        NumberImageEntity entity = new NumberImageEntity(testSessionId, label, expectedLabel, dImageWeights);
+        NumberImageEntity entity = new NumberImageEntity(testSessionId, label, expectedLabel, imageWeights);
         repository.save(entity);
         return ResponseEntity.ok(new NumberImageApiModel(entity));
     }
@@ -89,7 +95,7 @@ public class NumberImageController {
         if (entity == null)
             throw new NumberImageNotFoundException(model.getId());
         int label = classify(model);
-        entity.setImageWeights(model.toDoubleArray());
+        entity.setImageWeights(model.getImage());
         entity.setExpectedLabel(model.getExpectedLabel());
         entity.setLabel(label);
         repository.save(entity);

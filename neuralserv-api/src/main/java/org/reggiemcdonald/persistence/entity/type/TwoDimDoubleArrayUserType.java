@@ -6,11 +6,6 @@ import org.hibernate.usertype.UserType;
 
 import java.io.Serializable;
 import java.sql.*;
-import java.util.Arrays;
-
-/**
- * Built with help from Stack Overflow response: https://stackoverflow.com/questions/39119164/how-to-use-spring-data-jpa-to-insert-into-a-postgres-array-type-column
- */
 
 public class TwoDimDoubleArrayUserType implements UserType {
 
@@ -22,8 +17,8 @@ public class TwoDimDoubleArrayUserType implements UserType {
     }
 
     @Override
-    public Class<Double[][]> returnedClass() {
-        return Double[][].class;
+    public Class<double[][]> returnedClass() {
+        return double[][].class;
     }
 
     @Override
@@ -43,9 +38,9 @@ public class TwoDimDoubleArrayUserType implements UserType {
         if (resultSet.wasNull())
             return null;
         if (resultSet.getArray(strings[0]) == null)
-            return new Double[0][];
+            return new double[0][];
         Array array = resultSet.getArray(strings[0]);
-        Double[][] twoDeeDoubleArray = (Double[][]) array.getArray();
+        double[][] twoDeeDoubleArray = (double[][]) array.getArray();
         return twoDeeDoubleArray;
     }
 
@@ -55,7 +50,7 @@ public class TwoDimDoubleArrayUserType implements UserType {
         if (o == null) {
             preparedStatement.setNull(i, SQL_TYPES[0]);
         } else {
-            Double[][] oAsArray = (Double[][]) o;
+            double[][] oAsArray = (double[][]) o;
             Array array = conn.createArrayOf("float8", oAsArray);
             preparedStatement.setArray(i, array);
         }
@@ -73,7 +68,7 @@ public class TwoDimDoubleArrayUserType implements UserType {
 
     @Override
     public Serializable disassemble(Object o) throws HibernateException {
-        return (Double[][]) deepCopy(o);
+        return (double[][]) deepCopy(o);
     }
 
     @Override

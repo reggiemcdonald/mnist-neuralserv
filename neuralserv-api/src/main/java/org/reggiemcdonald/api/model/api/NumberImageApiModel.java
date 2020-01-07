@@ -7,7 +7,7 @@ public class NumberImageApiModel {
     private final long id;
     private int label;
     private Integer expectedLabel;
-    private Double[][] imageWeights;
+    private double[][] imageWeights;
 
     public NumberImageApiModel(NumberImageEntity dao) {
         id = dao.getId();
@@ -16,7 +16,7 @@ public class NumberImageApiModel {
         imageWeights = dao.getImageWeights();
     }
 
-    public NumberImageApiModel(int _id, int _label, Integer _expectedLabel, Double[][] _imageWeights) {
+    public NumberImageApiModel(int _id, int _label, Integer _expectedLabel, double[][] _imageWeights) {
         id = _id;
         label = _label;
         expectedLabel = _expectedLabel;
@@ -43,11 +43,11 @@ public class NumberImageApiModel {
         this.label = label;
     }
 
-    public Double[][] getImageWeights() {
+    public double[][] getImageWeights() {
         return imageWeights;
     }
 
-    public void setImageWeights(Double[][] imageWeights) {
+    public void setImageWeights(double[][] imageWeights) {
         this.imageWeights = imageWeights;
     }
 }
