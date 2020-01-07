@@ -38,7 +38,7 @@ public class TrainingSessionController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public TrainingSessionApiModel findById(@PathVariable("id") Long id)
             throws TrainingSessionNotFoundException {
-        TrainingSessionEntity entity = repository.findOne(id);
+        TrainingSessionEntity entity = repository.findById(id).get();
         if (entity == null)
             throw new TrainingSessionNotFoundException(id);
         return new TrainingSessionApiModel(entity);

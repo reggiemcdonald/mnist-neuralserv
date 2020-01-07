@@ -91,7 +91,7 @@ public class NumberImageController {
     @ResponseBody
     public ResponseEntity<NumberImageApiModel> putNumberImage(@Valid @RequestBody NumberImagePutRequestModel model)
             throws NumberImageNotFoundException {
-        NumberImageEntity entity = repository.findById(model.getId());
+        NumberImageEntity entity = repository.findById(model.getId()).get();
         if (entity == null)
             throw new NumberImageNotFoundException(model.getId());
         int label = classify(model);
