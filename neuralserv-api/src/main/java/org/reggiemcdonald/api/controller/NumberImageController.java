@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 @RestController
@@ -38,8 +37,11 @@ public class NumberImageController {
 
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<NumberImageApiModel> getNumberImage(@PathVariable(value = "id") Integer id) throws NumberImageNotFoundException {
-        NumberImageApiModel dto = new NumberImageApiModel(repository.findById(id));
+    public ResponseEntity<NumberImageApiModel> getNumberImage(@PathVariable(value = "id") Long id) throws NumberImageNotFoundException {
+        NumberImageEntity entity = repository
+                .findById(id)
+                .orElseThrow(() -> new NumberImageNotFoundException(id));
+        NumberImageApiModel dto = new NumberImageApiModel(entity);
         return ResponseEntity.ok(dto);
     }
 

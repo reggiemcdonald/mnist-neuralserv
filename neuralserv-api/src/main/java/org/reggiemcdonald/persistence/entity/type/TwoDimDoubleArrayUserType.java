@@ -7,6 +7,7 @@ import org.hibernate.usertype.UserType;
 
 import java.io.Serializable;
 import java.sql.*;
+import java.util.stream.Stream;
 
 public class TwoDimDoubleArrayUserType implements UserType {
 
@@ -41,8 +42,13 @@ public class TwoDimDoubleArrayUserType implements UserType {
         if (resultSet.getArray(strings[0]) == null)
             return new double[0][];
         Array array = resultSet.getArray(strings[0]);
-        double[][] twoDeeDoubleArray = (double[][]) array.getArray();
-        return twoDeeDoubleArray;
+        Double[][] twoDeeDoubleArray = (Double[][]) array.getArray();
+        double[][] twoDeeArray = new double[twoDeeDoubleArray.length][twoDeeDoubleArray[0].length];
+        for (int i = 0 ; i < twoDeeArray.length ; i++)
+            for (int j = 0 ; j < twoDeeArray[i].length; j++)
+                twoDeeArray[i][j] = (double) twoDeeDoubleArray[i][j];
+
+        return twoDeeArray;
     }
 
     @Override

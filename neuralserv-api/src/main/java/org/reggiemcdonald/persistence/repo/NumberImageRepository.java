@@ -8,8 +8,6 @@ import java.util.List;
 
 public interface NumberImageRepository extends CrudRepository<NumberImageEntity, Long> {
 
-    NumberImageEntity findById(long id);
-
     List<NumberImageEntity> findAllBySessionId(long sessionId);
 
     @Query("SELECT n from NumberImageEntity n WHERE n.expectedLabel IS NOT NULL")
