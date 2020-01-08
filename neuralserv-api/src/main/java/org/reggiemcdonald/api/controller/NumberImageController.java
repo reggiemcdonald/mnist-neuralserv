@@ -1,6 +1,5 @@
 package org.reggiemcdonald.api.controller;
 
-import com.reggiemcdonald.neural.feedforward.net.Network;
 import org.reggiemcdonald.api.model.api.NumberImageApiModel;
 import org.reggiemcdonald.api.model.request.NumberImagePutRequestModel;
 import org.reggiemcdonald.api.model.request.NumberImageRequestModel;
@@ -13,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -24,7 +22,7 @@ public class NumberImageController {
 
     private NumberImageRepository repository;
     private NeuralNetService service;
-    
+
     @Autowired
     public NumberImageController(NumberImageRepository _repository, NeuralNetService _service) {
         repository = _repository;
@@ -60,7 +58,6 @@ public class NumberImageController {
             throws Exception {
         Integer expectedLabel = model.getExpectedLabel();
         double[][] imageWeights = model.getImage();
-//        int label = classify(model);
         int label = service
                 .classify(model.getImage())
                 .get();
@@ -91,21 +88,12 @@ public class NumberImageController {
         int label = service
                 .classify(model.getImage())
                 .get();
-//        int label = classify(model);
         entity.setImageWeights(model.getImage());
         entity.setExpectedLabel(model.getExpectedLabel());
         entity.setLabel(label);
         repository.save(entity);
         return ResponseEntity.ok(new NumberImageApiModel(entity));
     }
-
-//    private int classify(NumberImageRequestModel model) {
-//        double[] output = network
-//                .input(model.getImage())
-//                .propagate()
-//                .output();
-//        return network.result(output);
-//    }
 
     private List<NumberImageApiModel> toApiModel(List<NumberImageEntity> entities) {
         List<NumberImageApiModel> models = new LinkedList<>();
