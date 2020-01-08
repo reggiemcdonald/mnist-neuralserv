@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 @RestController
@@ -82,9 +83,10 @@ public class NumberImageController {
     @ResponseBody
     public ResponseEntity<NumberImageApiModel> putNumberImage(@Valid @RequestBody NumberImagePutRequestModel model)
             throws NumberImageNotFoundException, InterruptedException, ExecutionException {
-        NumberImageEntity entity = repository.findById(model.getId()).get();
-        if (entity == null)
-            throw new NumberImageNotFoundException(model.getId());
+        NumberImageEntity entity = repository
+                .findById(model.getId())
+                .orElseThrow(() -> new NumberImageNotFoundException(model.getId()));
+
         int label = service
                 .classify(model.getImage())
                 .get();
