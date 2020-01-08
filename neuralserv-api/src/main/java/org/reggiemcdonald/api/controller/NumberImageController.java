@@ -4,41 +4,31 @@ import com.reggiemcdonald.neural.feedforward.net.Network;
 import org.reggiemcdonald.api.model.api.NumberImageApiModel;
 import org.reggiemcdonald.api.model.request.NumberImagePutRequestModel;
 import org.reggiemcdonald.api.model.request.NumberImageRequestModel;
+import org.reggiemcdonald.api.service.NeuralNetService;
 import org.reggiemcdonald.exception.NumberImageNotFoundException;
 import org.reggiemcdonald.persistence.entity.NumberImageEntity;
 import org.reggiemcdonald.persistence.repo.NumberImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping("/number")
 public class NumberImageController {
 
-    @Autowired
     private NumberImageRepository repository;
-
+    private NeuralNetService service;
+    
     @Autowired
-    private ExecutorService executorService;
-
-    private Network network;
-
-    @PostConstruct
-    public void initialize() {
-        try {
-            network = Network.loadWithException("/Users/reginaldmcdonald/Library/Application Support/reggiemcdonald/mnist-neuralserv/network-state.nerl");
-        } catch (IOException e) {
-            // TODO: Update to retrain network and remove runtime exception
-            throw new RuntimeException("Failed to load neural network");
-        }
+    public NumberImageController(NumberImageRepository _repository, NeuralNetService _service) {
+        repository = _repository;
+        service = _service;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -66,10 +56,14 @@ public class NumberImageController {
      */
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
-    public ResponseEntity<NumberImageApiModel> postNumberImage(@Valid @RequestBody NumberImageRequestModel model) throws Exception {
+    public ResponseEntity<NumberImageApiModel> postNumberImage(@Valid @RequestBody NumberImageRequestModel model)
+            throws Exception {
         Integer expectedLabel = model.getExpectedLabel();
         double[][] imageWeights = model.getImage();
-        int label = classify(model);
+//        int label = classify(model);
+        int label = service
+                .classify(model.getImage())
+                .get();
         long testSessionId = 0L; // TODO: Remove this
         NumberImageEntity entity = new NumberImageEntity(testSessionId, label, expectedLabel, imageWeights);
         repository.save(entity);
@@ -90,11 +84,14 @@ public class NumberImageController {
     @RequestMapping(method = RequestMethod.PUT, consumes = "application/json")
     @ResponseBody
     public ResponseEntity<NumberImageApiModel> putNumberImage(@Valid @RequestBody NumberImagePutRequestModel model)
-            throws NumberImageNotFoundException {
+            throws NumberImageNotFoundException, InterruptedException, ExecutionException {
         NumberImageEntity entity = repository.findById(model.getId()).get();
         if (entity == null)
             throw new NumberImageNotFoundException(model.getId());
-        int label = classify(model);
+        int label = service
+                .classify(model.getImage())
+                .get();
+//        int label = classify(model);
         entity.setImageWeights(model.getImage());
         entity.setExpectedLabel(model.getExpectedLabel());
         entity.setLabel(label);
@@ -102,13 +99,13 @@ public class NumberImageController {
         return ResponseEntity.ok(new NumberImageApiModel(entity));
     }
 
-    private int classify(NumberImageRequestModel model) {
-        double[] output = network
-                .input(model.getImage())
-                .propagate()
-                .output();
-        return network.result(output);
-    }
+//    private int classify(NumberImageRequestModel model) {
+//        double[] output = network
+//                .input(model.getImage())
+//                .propagate()
+//                .output();
+//        return network.result(output);
+//    }
 
     private List<NumberImageApiModel> toApiModel(List<NumberImageEntity> entities) {
         List<NumberImageApiModel> models = new LinkedList<>();
