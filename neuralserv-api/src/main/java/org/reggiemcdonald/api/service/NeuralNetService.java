@@ -1,6 +1,8 @@
 package org.reggiemcdonald.api.service;
 
 import com.reggiemcdonald.neural.feedforward.net.Network;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,7 @@ import java.util.concurrent.CompletableFuture;
 public class NeuralNetService {
 
     protected static final String NERL_FILE = "/Users/reginaldmcdonald/Library/Application Support/reggiemcdonald/mnist-neuralserv/network-state.nerl";
+    private static final Logger logger = LoggerFactory.getLogger(NeuralNetService.class);
 
     Network network;
 
@@ -20,7 +23,8 @@ public class NeuralNetService {
         try {
             network = Network.loadWithException(NERL_FILE);
         } catch (IOException e) {
-            network = new Network(new int [] {728, 100, 10});
+            logger.warn("Loading network from file failed. Using naive network");
+            network = new Network(new int [] {728, 30, 10});
         }
     }
 

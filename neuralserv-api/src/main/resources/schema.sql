@@ -6,7 +6,7 @@ CREATE TABLE number_image_entity (
     session_id bigint not null,
     label integer not null,
     expected_label integer,
-    image_weights double precision[][]
+    image_weights double precision[]
 );
 CREATE TABLE training_session (
     id bigint primary key,

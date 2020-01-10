@@ -7,10 +7,14 @@ public class ScaleApiModel {
 
     @NotNull
     @Size(min = 28, message = "Array must be as large as the image being scaled to")
-    double[][] imageWeights;
+    double[][] image;
 
-    public double[][] getImageWeights() {
-        return imageWeights;
+    public double[][] getImage() {
+        return image;
+    }
+
+    public void setImage(double[][] image) {
+        this.image = image;
     }
 }
 
