@@ -6,12 +6,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
-import java.io.File;
-import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 
 @Service
@@ -48,14 +45,7 @@ public class ScalingService {
                 resizedDoubles[i][j] = gray;
             }
         }
-        try {
-            ImageIO.write(img, "png", new File("original.png"));
-            ImageIO.write(resizedImage, "png", new File("scaled.png"));
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
         logger.info("Finished scaling the image");
-//        System.out.println(Arrays.deepToString(resizedDoubles));
         return CompletableFuture.completedFuture(resizedDoubles);
     }
 
