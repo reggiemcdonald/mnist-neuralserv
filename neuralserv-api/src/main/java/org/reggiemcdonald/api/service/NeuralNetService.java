@@ -13,7 +13,7 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class NeuralNetService {
 
-    protected static final String NERL_FILE = "/Users/reginaldmcdonald/Library/Application Support/reggiemcdonald/mnist-neuralserv/network-state.nerl";
+    protected static final String NERL_FILE = "nerl/network-state.nerl";
     private static final Logger logger = LoggerFactory.getLogger(NeuralNetService.class);
 
     Network network;

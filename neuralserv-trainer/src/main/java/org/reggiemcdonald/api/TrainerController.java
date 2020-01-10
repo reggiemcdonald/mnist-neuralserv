@@ -44,7 +44,7 @@ public class TrainerController {
         try {
             network = Network.loadWithException(TrainingRequest.NERL_FILE);
         } catch (IOException e) {
-            network = new Network(new int[] {784, 100, 10});
+            network = new Network(new int[] {784, 30, 10});
         }
 
         TrainingRequest request =

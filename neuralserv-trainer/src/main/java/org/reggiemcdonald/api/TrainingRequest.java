@@ -9,11 +9,11 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public class TrainingRequest implements Runnable {
-    protected static final String NERL_FILE = "/Users/reginaldmcdonald/Library/Application Support/reggiemcdonald/mnist-neuralserv/network-state.nerl";
-    private static final String TRAIN_IMAGES = "/Users/reginaldmcdonald/Library/Application Support/reggiemcdonald/mnist-neuralserv/train_images.gz";
-    private static final String TRAIN_LABELS = "/Users/reginaldmcdonald/Library/Application Support/reggiemcdonald/mnist-neuralserv/train_labels.gz";
-    private static final String TEST_IMAGES = "/Users/reginaldmcdonald/Library/Application Support/reggiemcdonald/mnist-neuralserv/test_images.gz";
-    private static final String TEST_LABELS = "/Users/reginaldmcdonald/Library/Application Support/reggiemcdonald/mnist-neuralserv/test_labels.gz";
+    protected static final String NERL_FILE = "";
+    private static final String TRAIN_IMAGES = "";
+    private static final String TRAIN_LABELS = "";
+    private static final String TEST_IMAGES = "";
+    private static final String TEST_LABELS = "";
 
     private static Logger logger = Logger.getLogger(TrainingRequest.class);
 
