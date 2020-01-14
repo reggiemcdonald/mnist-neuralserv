@@ -1,4 +1,4 @@
-package org.reggiemcdonald.api.model;
+package org.reggiemcdonald.api.model.request;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -15,22 +15,14 @@ public class NumberImageRequestModel {
 
     @Min(value = 0, message = "must be between 0 and 9")
     @Max(value = 9, message = "must be between 0 and 9")
-    private Integer expectedLabel;
+    private Integer expectedLabel = null;
 
     public double[][] getImage() {
         return image;
     }
 
-    public void setImage(double[][] image) {
-        this.image = image;
-    }
-
     public Integer getExpectedLabel() {
         return expectedLabel;
-    }
-
-    public void setExpectedLabel(Integer expectedLabel) {
-        this.expectedLabel = expectedLabel;
     }
 
     public Double[][] toDoubleArray() {

@@ -1,2 +1,3 @@
 neuralserv-api/target/*
+neuralserv-trainer/target/*
 .idea/*
