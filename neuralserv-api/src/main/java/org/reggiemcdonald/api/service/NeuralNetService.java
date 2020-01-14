@@ -24,7 +24,7 @@ public class NeuralNetService {
             network = Network.loadWithException(NERL_FILE);
         } catch (IOException e) {
             logger.warn("Loading network from file failed. Using naive network");
-            network = new Network(new int [] {728, 30, 10});
+            network = new Network(new int [] {728, 100, 10});
         }
     }
 

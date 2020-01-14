@@ -1,7 +1,6 @@
 package org.reggiemcdonald.api.controller;
 
 import org.reggiemcdonald.api.model.api.ScaleApiModel;
-import org.reggiemcdonald.api.service.NeuralNetService;
 import org.reggiemcdonald.api.service.ScalingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,15 +14,13 @@ import javax.validation.Valid;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping("/scale")
 public class ScalingController {
 
     ScalingService service;
-
-    @Autowired
-    NeuralNetService netService;
 
     Logger logger = LoggerFactory.getLogger(ScalingController.class);
 
@@ -32,29 +29,36 @@ public class ScalingController {
         service = _service;
     }
 
-    @RequestMapping(value = "convert", method = RequestMethod.POST)
-    public ResponseEntity<ScaleApiModel> convert(@Valid @RequestBody ScaleApiModel model) throws Exception {
-        // Make Request
-        double[][] resized = service.scale(model.getImage()).get();
-        resized = service.invert(resized);
-        model.setImage(resized);
-        int label = netService.classify(resized).get();
-        logger.info(String.format("The network guessed %d", label));
-        return ResponseEntity.ok(model);
-    }
-
-    @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<ScaleApiModel> scale(@Valid @RequestBody ScaleApiModel model) throws Exception {
-        double[][] resized = service.scale(model.getImage()).get();
-        model.setImage(resized);
-        int label = netService.classify(resized).get();
-        logger.info(String.format("The network guessed %d", label));
-        return ResponseEntity.ok(model);
-    }
-
-    @RequestMapping(value = "image-to-array", method = RequestMethod.POST)
-    public ResponseEntity<ScaleApiModel> convertToArray(@RequestParam("file") MultipartFile file) {
+    @RequestMapping(value = "image-scale", method = RequestMethod.POST)
+    public ResponseEntity<ScaleApiModel> scaleImage(@RequestParam(value = "file") MultipartFile file)
+            throws ExecutionException, InterruptedException {
+        logger.info("Began image scale request");
         ScaleApiModel model = new ScaleApiModel();
+        try {
+            double[][] weights = mapToArray(file);
+            service.invert(weights);
+            double[][] scaled = service.centerAndScale(weights).get();
+            model.setImage(scaled);
+        } catch (IOException e) {
+            return ResponseEntity.badRequest().body(model);
+        }
+        return ResponseEntity.ok(model);
+    }
+
+    @RequestMapping(value = "array-scale", method = RequestMethod.POST)
+    public ResponseEntity<ScaleApiModel> scaleArray(@Valid @RequestBody ScaleApiModel model)
+            throws ExecutionException, InterruptedException{
+        logger.info("Began array scale request");
+        double[][] weights = model.getImage();
+        service.invert(weights);
+        double[][] scaled = service.centerAndScale(weights).get();
+        model.setImage(scaled);
+        return ResponseEntity
+                .status(501)
+                .body(model);
+    }
+
+    private double[][] mapToArray(MultipartFile file) throws IOException {
         try(InputStream in = file.getInputStream()) {
             BufferedImage img = ImageIO.read(in);
             double[][] weights = new double[img.getHeight()][img.getWidth()];
@@ -68,11 +72,8 @@ public class ScalingController {
                     weights[i][j] = gray;
                 }
             }
-            model.setImage(weights);
-        } catch (IOException e) {
-            return ResponseEntity.badRequest().body(model);
+            return weights;
         }
-        return ResponseEntity.ok(model);
     }
 
 }
