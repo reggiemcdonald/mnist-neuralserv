@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.io.IOException;
+
 @ControllerAdvice
-public class NumberImageExceptionHandler {
+public class NeuralServExceptionHandler {
 
     @ResponseBody
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -33,5 +35,12 @@ public class NumberImageExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String notFoundExceptionHandler(NotFoundException e) {
         return e.getMessage();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(IOException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public String fileReadError(IOException e) {
+        return "There was an issue processing this request.";
     }
 }

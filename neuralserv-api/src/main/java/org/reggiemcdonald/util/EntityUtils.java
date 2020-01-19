@@ -8,6 +8,7 @@ import org.reggiemcdonald.persistence.entity.TrainingSessionEntity;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class EntityUtils {
 
@@ -25,12 +26,18 @@ public class EntityUtils {
         return models;
     }
 
-    public static List<NumberImage> toNumberImageList(Iterable<NumberImageEntity> entities) {
-        List<NumberImage> numberImages = new LinkedList<>();
+    public static List<NumberImage> toNumberImageList(Iterable<NumberImageEntity> entities, List<NumberImage> numberImages, Predicate<NumberImageEntity> pred) {
         for (NumberImageEntity entity : entities) {
-            numberImages.add(new NumberImage(entity.getImageWeights(), entity.getLabel()));
+            if (pred.test(entity)) {
+                numberImages.add(new NumberImage(entity.getImageWeights(), entity.getLabel()));
+            }
         }
         return numberImages;
+    }
+
+    public static List<NumberImage> toNumberImageList(Iterable<NumberImageEntity> entities, Predicate<NumberImageEntity> pred) {
+        List<NumberImage> numberImages = new LinkedList<>();
+        return toNumberImageList(entities, numberImages, pred);
     }
 
 }

@@ -1,7 +1,5 @@
 package org.reggiemcdonald.persistence.entity;
 
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -16,11 +14,11 @@ public class TrainingSessionEntity {
 
     @Column
     @NotNull
-    private int internalTrainingSize;
+    private int internalTestingSize;
 
     @Column
     @NotNull
-    private int externalTrainingSize;
+    private int externalTestingSize;
 
     @Column
     @NotNull
@@ -38,8 +36,8 @@ public class TrainingSessionEntity {
 
     public TrainingSessionEntity(int _internalTrainingSize, int _externalTrainingSize, int _internalNumberCorrect,
                                  int _externalNumberCorrect, Date _trainingDate) {
-        internalTrainingSize = _internalTrainingSize;
-        externalTrainingSize = _externalTrainingSize;
+        internalTestingSize = _internalTrainingSize;
+        externalTestingSize = _externalTrainingSize;
         internalNumberCorrect = _internalNumberCorrect;
         externalNumberCorrect = _externalNumberCorrect;
         trainingDate = _trainingDate;
@@ -49,20 +47,20 @@ public class TrainingSessionEntity {
         return id;
     }
 
-    public int getInternalTrainingSize() {
-        return internalTrainingSize;
+    public int getInternalTestingSize() {
+        return internalTestingSize;
     }
 
-    public void setInternalTrainingSize(int internalTrainingSize) {
-        this.internalTrainingSize = internalTrainingSize;
+    public void setInternalTestingSize(int internalTrainingSize) {
+        this.internalTestingSize = internalTrainingSize;
     }
 
-    public int getExternalTrainingSize() {
-        return externalTrainingSize;
+    public int getExternalTestingSize() {
+        return externalTestingSize;
     }
 
-    public void setExternalTrainingSize(int externalTrainingSize) {
-        this.externalTrainingSize = externalTrainingSize;
+    public void setExternalTestingSize(int externalTrainingSize) {
+        this.externalTestingSize = externalTrainingSize;
     }
 
     public int getInternalNumberCorrect() {

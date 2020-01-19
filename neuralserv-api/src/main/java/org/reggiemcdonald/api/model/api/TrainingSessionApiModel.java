@@ -8,9 +8,9 @@ public class TrainingSessionApiModel {
 
     private long id;
 
-    private int internalTrainingSize;
+    private int internalTestingSize;
 
-    private int externalTrainingSize;
+    private int externalTestingSize;
 
     private int internalNumberCorrect;
 
@@ -20,8 +20,8 @@ public class TrainingSessionApiModel {
 
     public TrainingSessionApiModel(TrainingSessionEntity entity) {
         id = entity.getId();
-        internalTrainingSize = entity.getInternalTrainingSize();
-        externalTrainingSize = entity.getExternalTrainingSize();
+        internalTestingSize = entity.getInternalTestingSize();
+        externalTestingSize = entity.getExternalTestingSize();
         internalNumberCorrect = entity.getInternalNumberCorrect();
         externalNumberCorrect = entity.getExternalNumberCorrect();
         trainingDate = entity.getTrainingDate();
@@ -31,12 +31,12 @@ public class TrainingSessionApiModel {
         return id;
     }
 
-    public int getInternalTrainingSize() {
-        return internalTrainingSize;
+    public int getInternalTestingSize() {
+        return internalTestingSize;
     }
 
-    public int getExternalTrainingSize() {
-        return externalTrainingSize;
+    public int getExternalTestingSize() {
+        return externalTestingSize;
     }
 
     public int getInternalNumberCorrect() {
