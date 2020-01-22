@@ -3,7 +3,7 @@ package org.reggiemcdonald.api.controller;
 import org.reggiemcdonald.api.model.api.NumberImageApiModel;
 import org.reggiemcdonald.api.model.request.NumberImagePutRequestModel;
 import org.reggiemcdonald.api.model.request.NumberImageRequestModel;
-import org.reggiemcdonald.api.service.NeuralNetService;
+import org.reggiemcdonald.service.NeuralNetService;
 import org.reggiemcdonald.exception.NumberImageNotFoundException;
 import org.reggiemcdonald.persistence.entity.NumberImageEntity;
 import org.reggiemcdonald.persistence.repo.NumberImageRepository;

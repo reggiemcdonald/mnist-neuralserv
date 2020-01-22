@@ -1,6 +1,6 @@
 package org.reggiemcdonald.api.controller;
 
-import org.reggiemcdonald.api.service.NeuralNetService;
+import org.reggiemcdonald.service.NeuralNetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;

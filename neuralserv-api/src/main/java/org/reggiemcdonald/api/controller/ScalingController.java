@@ -1,7 +1,7 @@
 package org.reggiemcdonald.api.controller;
 
 import org.reggiemcdonald.api.model.api.ScaleApiModel;
-import org.reggiemcdonald.api.service.ScalingService;
+import org.reggiemcdonald.service.ScalingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
