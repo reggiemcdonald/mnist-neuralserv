@@ -1,6 +1,13 @@
 package org.reggiemcdonald.persistence.entity;
 
+import org.hibernate.collection.internal.PersistentList;
+import org.hibernate.collection.spi.PersistentCollection;
+
 import javax.persistence.*;
+import javax.transaction.Transactional;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Objects;
 
 /**
  * Made with help from the easy to follow tutorial at
@@ -19,6 +26,14 @@ public class AppUserEntity {
 
     @Column
     private String password;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "app_user_role",
+        joinColumns = @JoinColumn(name = "role_id"),
+        inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Collection<Role> roles;
 
     public AppUserEntity() {}
 
@@ -45,5 +60,30 @@ public class AppUserEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Collection<Role> getRoles() {
+        return Collections.unmodifiableCollection(roles);
+    }
+
+    public void addRole(Role role) {
+        roles.add(role);
+    }
+
+    public void setRoles(Collection<Role> _roles) {
+        roles = _roles;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AppUserEntity entity = (AppUserEntity) o;
+        return Objects.equals(id, entity.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

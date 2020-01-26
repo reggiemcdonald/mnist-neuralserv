@@ -30,18 +30,18 @@ public class NumberImageEntity {
         label = _label;
     }
 
-    public NumberImageEntity(int _label, int _expectedLabel) {
+    public NumberImageEntity(int _label, Integer _expectedLabel) {
         label = _label;
         expectedLabel = _expectedLabel;
     }
 
-    public NumberImageEntity(int _label, int _expectedLabel, long _sessionId) {
+    public NumberImageEntity(int _label, Integer _expectedLabel, long _sessionId) {
         sessionId = _sessionId;
         label = _label;
         expectedLabel = _expectedLabel;
     }
 
-    public NumberImageEntity(long _sessionId, int _label, int _expectedLabel, double[][] _imageWeights) {
+    public NumberImageEntity(long _sessionId, int _label, Integer _expectedLabel, double[][] _imageWeights) {
         sessionId = _sessionId;
         label = _label;
         expectedLabel = _expectedLabel;

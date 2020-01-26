@@ -9,6 +9,7 @@ import org.reggiemcdonald.persistence.entity.NumberImageEntity;
 import org.reggiemcdonald.persistence.repo.NumberImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -57,6 +58,7 @@ public class NumberImageController {
      */
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
+    @PreAuthorize("hasRole(APP_USER_CREATE)")
     public ResponseEntity<NumberImageApiModel> postNumberImage(@Valid @RequestBody NumberImageRequestModel model)
             throws Exception {
         Integer expectedLabel = model.getExpectedLabel();

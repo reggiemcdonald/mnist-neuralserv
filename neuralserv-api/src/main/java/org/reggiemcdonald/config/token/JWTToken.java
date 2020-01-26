@@ -5,12 +5,14 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.reggiemcdonald.persistence.entity.AppUserEntity;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Class made with help from
@@ -21,6 +23,7 @@ public class JWTToken implements Token {
 
     @Value("${jwt.secret.string}")
     private String SECRET_STRING;
+    private static final String AUTHORITIES_KEY = "AUTHORITIES";
     private long expiration;
     private final SignatureAlgorithm signatureAlgorithm;
 
@@ -40,9 +43,14 @@ public class JWTToken implements Token {
     public String create(UserDetails model) {
         final Date issuedAt = new Date(System.currentTimeMillis());
         final Date expiration = new Date(issuedAt.getTime() + this.expiration);
+        final String authorities = model
+                .getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
         return Jwts
                 .builder()
-                .setClaims(new HashMap<>())
+                .claim(AUTHORITIES_KEY, authorities)
                 .setSubject(model.getUsername())
                 .setIssuedAt(issuedAt)
                 .setExpiration(expiration)

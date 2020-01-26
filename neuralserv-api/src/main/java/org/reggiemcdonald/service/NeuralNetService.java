@@ -25,7 +25,7 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class NeuralNetService {
 
-    protected static final String NERL_FILE = "nerl/network-state.nerl";
+    protected static final String NERL_FILE = "nerl/network_state.nerl";
     private static final String TRAIN_IMAGES = "nerl/train_images.gz";
     private static final String TRAIN_LABELS = "nerl/train_labels.gz";
     private static final String TEST_IMAGES = "nerl/test_images.gz";
@@ -48,6 +48,7 @@ public class NeuralNetService {
     @PostConstruct
     public void init() {
         try {
+            logger.info(System.getProperty("user.dir"));
             network = Network.loadWithException(NERL_FILE);
             logger.info("Loaded network from file.");
         } catch (IOException e) {
@@ -58,6 +59,8 @@ public class NeuralNetService {
 
     @Async
     public CompletableFuture<Integer> classify(double[][] imageWeights) {
+        if (network == null)
+            throw new RuntimeException();
         double[] output = network
                 .input(imageWeights)
                 .propagate()
