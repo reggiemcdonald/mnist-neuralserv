@@ -4,7 +4,9 @@ import org.jboss.logging.Logger;
 import org.reggiemcdonald.api.model.api.AppUserApiModel;
 import org.reggiemcdonald.config.token.Token;
 import org.reggiemcdonald.persistence.entity.AppUserEntity;
+import org.reggiemcdonald.persistence.entity.Role;
 import org.reggiemcdonald.persistence.repo.AppUserRepository;
+import org.reggiemcdonald.persistence.repo.RoleRepository;
 import org.reggiemcdonald.service.JWTUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,15 +31,18 @@ public class AppUserController {
     AuthenticationManager auth;
     PasswordEncoder encoder;
     AppUserRepository repository;
+    RoleRepository roleRepository;
     UserDetailsService service;
     Token token;
 
     @Autowired
     public AppUserController(AuthenticationManager _auth, PasswordEncoder _encoder,
-                             AppUserRepository _repository, JWTUserDetailsService _service, Token _token) {
+                             AppUserRepository _repository, RoleRepository _roleRepository,
+                             JWTUserDetailsService _service, Token _token) {
         auth = _auth;
         encoder = _encoder;
         repository = _repository;
+        roleRepository = _roleRepository;
         service = _service;
         token = _token;
     }
@@ -46,7 +51,8 @@ public class AppUserController {
     public ResponseEntity<Boolean> addUser(@RequestBody AppUserApiModel model) {
         AppUserEntity entity = new AppUserEntity(
                 model.getUsername(),
-                encoder.encode(model.getPassword())
+                encoder.encode(model.getPassword()),
+                roleRepository.findByName("ROLE_USER")
         );
         AppUserEntity s = repository.save(entity);
         return ResponseEntity.status(HttpStatus.CREATED).body(true);

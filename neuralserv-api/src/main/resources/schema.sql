@@ -1,5 +1,5 @@
 DROP SEQUENCE IF EXISTS hibernate_sequence;
-DROP TABLE IF EXISTS number_image_entity, matrix_row_entity, training_session;
+DROP TABLE IF EXISTS number_image_entity, matrix_row_entity, training_session, app_user, app_user_role;
 
 CREATE TABLE IF NOT EXISTS privilege (
     id bigint primary key,

@@ -2,12 +2,11 @@ package org.reggiemcdonald.persistence.entity;
 
 import org.hibernate.collection.internal.PersistentList;
 import org.hibernate.collection.spi.PersistentCollection;
+import sun.awt.image.ImageWatched;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Made with help from the easy to follow tutorial at
@@ -40,6 +39,14 @@ public class AppUserEntity {
     public AppUserEntity(String _username, String _password) {
         username = _username;
         password = _password;
+        roles    = new LinkedList<>();
+    }
+
+    public AppUserEntity(String _username, String _password, Role... _roles) {
+        username = _username;
+        password = _password;
+        roles    = new LinkedList<>();
+        roles.addAll(Arrays.asList(_roles));
     }
 
     public Long getId() {

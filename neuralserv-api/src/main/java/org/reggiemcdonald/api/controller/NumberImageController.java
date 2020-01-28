@@ -58,7 +58,7 @@ public class NumberImageController {
      */
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
-    @PreAuthorize("hasRole(APP_USER_CREATE)")
+    @PreAuthorize("hasAuthority('PRIVILEGE_EDIT')")
     public ResponseEntity<NumberImageApiModel> postNumberImage(@Valid @RequestBody NumberImageRequestModel model)
             throws Exception {
         Integer expectedLabel = model.getExpectedLabel();
