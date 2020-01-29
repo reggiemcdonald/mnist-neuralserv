@@ -7,6 +7,7 @@ import org.reggiemcdonald.exception.TrainingSessionNotFoundException;
 import org.reggiemcdonald.persistence.entity.TrainingSessionEntity;
 import org.reggiemcdonald.persistence.repo.TrainingSessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(name = "/training-session")
+@PreAuthorize("hasAuthority('PRIVILEGE_MAINTAIN')")
 public class TrainingSessionController {
 
     @Autowired

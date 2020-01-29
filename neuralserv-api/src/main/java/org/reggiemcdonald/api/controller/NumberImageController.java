@@ -31,6 +31,7 @@ public class NumberImageController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('PRIVILEGE_READ')")
     public ResponseEntity<List<NumberImageApiModel>> getNumberImages(@RequestParam(value = "sessionId") Long sessionId) {
         List<NumberImageEntity> entities = repository.findAllBySessionId(sessionId);
         return ResponseEntity.ok(toApiModel(entities));
@@ -38,6 +39,7 @@ public class NumberImageController {
 
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('PRIVILEGE_EDIT')")
     public ResponseEntity<NumberImageApiModel> getNumberImage(@PathVariable(value = "id") Long id) throws NumberImageNotFoundException {
         NumberImageEntity entity = repository
                 .findById(id)
@@ -84,6 +86,7 @@ public class NumberImageController {
      * @throws NumberImageNotFoundException
      */
     @RequestMapping(method = RequestMethod.PUT, consumes = "application/json")
+    @PreAuthorize("hasAuthority('PRIVILGE_EDIT')")
     @ResponseBody
     public ResponseEntity<NumberImageApiModel> putNumberImage(@Valid @RequestBody NumberImagePutRequestModel model)
             throws NumberImageNotFoundException, InterruptedException, ExecutionException {
