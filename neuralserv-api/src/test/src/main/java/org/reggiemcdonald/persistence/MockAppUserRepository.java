@@ -1,32 +1,18 @@
 package org.reggiemcdonald.persistence;
 
-import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.reggiemcdonald.persistence.entity.AppUserEntity;
 import org.reggiemcdonald.persistence.entity.Privilege;
 import org.reggiemcdonald.persistence.entity.Role;
 import org.reggiemcdonald.persistence.repo.AppUserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedList;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.reggiemcdonald.util.ListUtils.linkedList;
 
 @TestConfiguration
-@RunWith(SpringRunner.class)
-public class AppUserRepositoryTest {
+public class MockAppUserRepository {
 
     private String adminName = "Test Admin", userName = "Test User";
     private String adminPassword = "admin pass", userPassword = "userPass";
@@ -37,14 +23,12 @@ public class AppUserRepositoryTest {
     @MockBean
     private AppUserRepository repository;
 
-    @BeforeEach
-    private void runBefore() {
+    public MockAppUserRepository() {
         setup();
     }
 
-    @Test
-    public void testTrue() {
-        assertTrue(true);
+    public AppUserRepository getRepository() {
+        return repository;
     }
 
     private void setup() {
