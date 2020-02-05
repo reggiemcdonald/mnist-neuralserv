@@ -1,5 +1,5 @@
-DROP SEQUENCE IF EXISTS hibernate_sequence;
-DROP TABLE IF EXISTS number_image_entity, matrix_row_entity, training_session, app_user, app_user_role;
+-- DROP SEQUENCE IF EXISTS hibernate_sequence;
+-- DROP TABLE IF EXISTS number_image_entity, matrix_row_entity, training_session;
 
 CREATE TABLE IF NOT EXISTS privilege (
     id bigint primary key,
@@ -58,5 +58,6 @@ CREATE TABLE training_session (
 --     FOREIGN KEY (number_image_id) REFERENCES number_image_entity(id) ON DELETE CASCADE,
 --     FOREIGN KEY (training_session_id) REFERENCES training_session(id) ON DELETE CASCADE
 -- );
+
 
 CREATE SEQUENCE IF NOT EXISTS hibernate_sequence;

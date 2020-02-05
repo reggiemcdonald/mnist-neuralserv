@@ -53,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public Token token() {
-        return new JWTToken(50000, SignatureAlgorithm.HS256);
+        return new JWTToken(5000000, SignatureAlgorithm.HS256);
     }
 
     @Bean

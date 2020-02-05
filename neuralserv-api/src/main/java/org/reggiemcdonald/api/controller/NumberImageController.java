@@ -86,7 +86,7 @@ public class NumberImageController {
      * @throws NumberImageNotFoundException
      */
     @RequestMapping(method = RequestMethod.PUT, consumes = "application/json")
-    @PreAuthorize("hasAuthority('PRIVILGE_EDIT')")
+    @PreAuthorize("hasAuthority('PRIVILEGE_EDIT')")
     @ResponseBody
     public ResponseEntity<NumberImageApiModel> putNumberImage(@Valid @RequestBody NumberImagePutRequestModel model)
             throws NumberImageNotFoundException, InterruptedException, ExecutionException {

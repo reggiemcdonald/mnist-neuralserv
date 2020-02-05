@@ -15,7 +15,6 @@ import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping(value = "/maint")
-@PreAuthorize("hasAuthority('PRIVILEGE_MAINTAIN')")
 public class MaintenanceController {
 
     NeuralNetService service;
@@ -26,6 +25,7 @@ public class MaintenanceController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
+    @PreAuthorize("hasAuthority('PRIVILEGE_MAINTAIN')")
     public ResponseEntity<String> postTrainingSession(
             @RequestParam Integer epochs,
             @RequestParam Integer batchSize,
