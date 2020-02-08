@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedList;
 
 /**
  * This class was based off of the work published here:

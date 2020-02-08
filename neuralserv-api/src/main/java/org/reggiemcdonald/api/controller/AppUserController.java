@@ -28,12 +28,12 @@ public class AppUserController {
 
     private static final Logger logger = Logger.getLogger(AppUserController.class);
 
-    AuthenticationManager auth;
-    PasswordEncoder encoder;
-    AppUserRepository repository;
-    RoleRepository roleRepository;
-    UserDetailsService service;
-    Token token;
+    private AuthenticationManager auth;
+    private PasswordEncoder encoder;
+    protected AppUserRepository repository;
+    protected RoleRepository roleRepository;
+    protected UserDetailsService service;
+    private Token token;
 
     @Autowired
     public AppUserController(AuthenticationManager _auth, PasswordEncoder _encoder,
