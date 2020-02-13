@@ -27,3 +27,9 @@ And an Apps Script app.
 - [ ] Role-based authentication
 - [ ] Basic frontend with canvaskit for drawing
 - [ ] Apps Script app
+
+### To Run
+- Specify the username and password to the postgres instance that you have running
+on your computer in `application.properties` (or make them environment variables)
+- Ensure the port number of the database matches your configuration
+- Run `mvn compile spring-boot:run`
