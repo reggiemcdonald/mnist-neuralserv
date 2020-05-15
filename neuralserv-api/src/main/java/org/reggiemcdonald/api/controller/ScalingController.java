@@ -1,6 +1,7 @@
 package org.reggiemcdonald.api.controller;
 
 import org.reggiemcdonald.api.model.api.ScaleApiModel;
+import org.reggiemcdonald.exception.ScalingServiceException;
 import org.reggiemcdonald.service.ScalingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +33,7 @@ public class ScalingController {
 
     @RequestMapping(value = "image-scale", method = RequestMethod.POST)
     public ResponseEntity<ScaleApiModel> scaleImage(@RequestParam(value = "file") MultipartFile file)
-            throws ExecutionException, InterruptedException {
+            throws ExecutionException, InterruptedException, ScalingServiceException {
         logger.info("Began image scale request");
         ScaleApiModel model = new ScaleApiModel();
         try {
@@ -48,7 +49,7 @@ public class ScalingController {
 
     @RequestMapping(value = "array-scale", method = RequestMethod.POST)
     public ResponseEntity<ScaleApiModel> scaleArray(@Valid @RequestBody ScaleApiModel model)
-            throws ExecutionException, InterruptedException{
+            throws ExecutionException, InterruptedException, ScalingServiceException {
         logger.info("Began array scale request");
         double[][] weights = model.getImage();
         service.invert(weights);
