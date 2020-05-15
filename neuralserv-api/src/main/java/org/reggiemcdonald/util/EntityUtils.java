@@ -5,9 +5,9 @@ import org.reggiemcdonald.api.model.api.NumberImageApiModel;
 import org.reggiemcdonald.api.model.api.TrainingSessionApiModel;
 import org.reggiemcdonald.persistence.entity.NumberImageEntity;
 import org.reggiemcdonald.persistence.entity.TrainingSessionEntity;
+import sun.awt.image.ImageWatched;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.function.Predicate;
 
 public class EntityUtils {
@@ -39,5 +39,4 @@ public class EntityUtils {
         List<NumberImage> numberImages = new LinkedList<>();
         return toNumberImageList(entities, numberImages, pred);
     }
-
 }

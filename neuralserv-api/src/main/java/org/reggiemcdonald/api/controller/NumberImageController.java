@@ -3,12 +3,13 @@ package org.reggiemcdonald.api.controller;
 import org.reggiemcdonald.api.model.api.NumberImageApiModel;
 import org.reggiemcdonald.api.model.request.NumberImagePutRequestModel;
 import org.reggiemcdonald.api.model.request.NumberImageRequestModel;
-import org.reggiemcdonald.api.service.NeuralNetService;
+import org.reggiemcdonald.service.NeuralNetService;
 import org.reggiemcdonald.exception.NumberImageNotFoundException;
 import org.reggiemcdonald.persistence.entity.NumberImageEntity;
 import org.reggiemcdonald.persistence.repo.NumberImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -30,6 +31,7 @@ public class NumberImageController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('PRIVILEGE_READ')")
     public ResponseEntity<List<NumberImageApiModel>> getNumberImages(@RequestParam(value = "sessionId") Long sessionId) {
         List<NumberImageEntity> entities = repository.findAllBySessionId(sessionId);
         return ResponseEntity.ok(toApiModel(entities));
@@ -37,6 +39,7 @@ public class NumberImageController {
 
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('PRIVILEGE_EDIT')")
     public ResponseEntity<NumberImageApiModel> getNumberImage(@PathVariable(value = "id") Long id) throws NumberImageNotFoundException {
         NumberImageEntity entity = repository
                 .findById(id)
@@ -57,6 +60,7 @@ public class NumberImageController {
      */
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
+    @PreAuthorize("hasAuthority('PRIVILEGE_EDIT')")
     public ResponseEntity<NumberImageApiModel> postNumberImage(@Valid @RequestBody NumberImageRequestModel model)
             throws Exception {
         Integer expectedLabel = model.getExpectedLabel();
@@ -66,7 +70,7 @@ public class NumberImageController {
                 .get();
         long testSessionId = 0L; // TODO: Remove this
         NumberImageEntity entity = new NumberImageEntity(testSessionId, label, expectedLabel, imageWeights);
-        repository.save(entity);
+        entity = repository.save(entity);
         return ResponseEntity.ok(new NumberImageApiModel(entity));
     }
 
@@ -82,6 +86,7 @@ public class NumberImageController {
      * @throws NumberImageNotFoundException
      */
     @RequestMapping(method = RequestMethod.PUT, consumes = "application/json")
+    @PreAuthorize("hasAuthority('PRIVILEGE_EDIT')")
     @ResponseBody
     public ResponseEntity<NumberImageApiModel> putNumberImage(@Valid @RequestBody NumberImagePutRequestModel model)
             throws NumberImageNotFoundException, InterruptedException, ExecutionException {

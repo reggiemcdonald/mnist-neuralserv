@@ -1,9 +1,10 @@
 package org.reggiemcdonald.api.controller;
 
 import org.reggiemcdonald.api.model.api.ScaleApiModel;
-import org.reggiemcdonald.api.service.ScalingService;
+import org.reggiemcdonald.service.ScalingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ import java.util.concurrent.ExecutionException;
 @RequestMapping("/scale")
 public class ScalingController {
 
-    ScalingService service;
+    private ScalingService service;
 
     Logger logger = LoggerFactory.getLogger(ScalingController.class);
 

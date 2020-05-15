@@ -1,8 +1,9 @@
 package org.reggiemcdonald.api.controller;
 
-import org.reggiemcdonald.api.service.NeuralNetService;
+import org.reggiemcdonald.service.NeuralNetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,7 +17,7 @@ import java.util.concurrent.ExecutionException;
 @RequestMapping(value = "/maint")
 public class MaintenanceController {
 
-    NeuralNetService service;
+    private NeuralNetService service;
 
     @Autowired
     public MaintenanceController(NeuralNetService _service) {
@@ -24,6 +25,7 @@ public class MaintenanceController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
+    @PreAuthorize("hasAuthority('PRIVILEGE_MAINTAIN')")
     public ResponseEntity<String> postTrainingSession(
             @RequestParam Integer epochs,
             @RequestParam Integer batchSize,

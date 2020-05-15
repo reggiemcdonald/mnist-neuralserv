@@ -1,9 +1,8 @@
-package org.reggiemcdonald.api.service;
+package org.reggiemcdonald.service;
 
 import com.reggiemcdonald.neural.feedforward.net.Network;
 import com.reggiemcdonald.neural.feedforward.res.ImageLoader;
 import com.reggiemcdonald.neural.feedforward.res.NumberImage;
-import org.reggiemcdonald.persistence.entity.NumberImageEntity;
 import org.reggiemcdonald.persistence.entity.TrainingSessionEntity;
 import org.reggiemcdonald.persistence.repo.NumberImageRepository;
 import org.reggiemcdonald.persistence.repo.TrainingSessionRepository;
@@ -13,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import sun.nio.ch.Net;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -27,7 +25,7 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class NeuralNetService {
 
-    protected static final String NERL_FILE = "nerl/network-state.nerl";
+    protected static final String NERL_FILE = "nerl/network_state.nerl";
     private static final String TRAIN_IMAGES = "nerl/train_images.gz";
     private static final String TRAIN_LABELS = "nerl/train_labels.gz";
     private static final String TEST_IMAGES = "nerl/test_images.gz";
@@ -36,10 +34,10 @@ public class NeuralNetService {
 
     private static final double PROPORTION_USER_TRAINING = 0.8;
 
-    Network network;
+    private Network network;
 
-    NumberImageRepository numberImageRepository;
-    TrainingSessionRepository trainingSessionRepository;
+    private NumberImageRepository numberImageRepository;
+    private TrainingSessionRepository trainingSessionRepository;
 
     @Autowired
     public NeuralNetService(NumberImageRepository _numberImageRepository, TrainingSessionRepository _trainingSessionRepository) {
@@ -50,15 +48,19 @@ public class NeuralNetService {
     @PostConstruct
     public void init() {
         try {
+            logger.info(System.getProperty("user.dir"));
             network = Network.loadWithException(NERL_FILE);
+            logger.info("Loaded network from file.");
         } catch (IOException e) {
-            logger.warn("Loading network from file failed. Using naive network");
-            network = new Network(new int [] { 728, 100, 10 });
+            logger.warn("Loading network from file failed. Using naive network " + e.getMessage());
+            network = new Network(new int [] { 784, 100, 10 });
         }
     }
 
     @Async
     public CompletableFuture<Integer> classify(double[][] imageWeights) {
+        if (network == null)
+            throw new RuntimeException();
         double[] output = network
                 .input(imageWeights)
                 .propagate()
