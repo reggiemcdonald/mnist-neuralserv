@@ -8,6 +8,5 @@ This project aims to make use of the MLP network that I created [here](https://g
 - [x] Endpoint for scaling images to MNIST format
 - [x] Endpoint for classifying images of numbers
 - [x] Endpoint for admins to start network training
-- [ ] Role-based authentication
-- [ ] Basic frontend with canvaskit for drawing
-- [ ] Apps Script app
+- [x] Role-based authentication
+- [ ] Full test suite
