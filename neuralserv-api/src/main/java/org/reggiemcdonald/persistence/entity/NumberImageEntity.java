@@ -1,10 +1,12 @@
 package org.reggiemcdonald.persistence.entity;
 
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
 @Entity
+@EqualsAndHashCode(exclude = {"imageWeights"})
 public class NumberImageEntity {
 
     @Id

@@ -1,14 +1,22 @@
 package org.reggiemcdonald.api.model.api;
 
+import lombok.NoArgsConstructor;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+@NoArgsConstructor
 public class AppUserApiModel {
 
-    @NotEmpty
+    public AppUserApiModel(String _username, String _password) {
+        username = _username;
+        password = _password;
+    }
+
+    @NotEmpty(message="username is a required field")
     private String username;
 
-    @NotEmpty
+    @NotEmpty(message="password is a required field")
     @Size(min = 8)
     private String password;
 

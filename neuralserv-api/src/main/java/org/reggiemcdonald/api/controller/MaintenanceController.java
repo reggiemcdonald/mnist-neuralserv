@@ -17,7 +17,7 @@ import java.util.concurrent.ExecutionException;
 @RequestMapping(value = "/maint")
 public class MaintenanceController {
 
-    NeuralNetService service;
+    private NeuralNetService service;
 
     @Autowired
     public MaintenanceController(NeuralNetService _service) {

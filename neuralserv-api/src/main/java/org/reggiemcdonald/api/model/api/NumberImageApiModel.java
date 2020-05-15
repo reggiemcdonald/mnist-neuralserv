@@ -1,7 +1,9 @@
 package org.reggiemcdonald.api.model.api;
 
+import lombok.EqualsAndHashCode;
 import org.reggiemcdonald.persistence.entity.NumberImageEntity;
 
+@EqualsAndHashCode(exclude = {"imageWeights"})
 public class NumberImageApiModel {
 
     private final long id;

@@ -2,6 +2,9 @@ neuralserv-api/target/*
 .idea/*
 neuralserv-api/start.sh
 
+### Environment file
+.env
+
 ### Testing Images
 **/*.png
 **/nerl/*

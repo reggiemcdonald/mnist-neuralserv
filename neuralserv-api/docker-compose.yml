@@ -1,0 +1,13 @@
+version: '3'
+services:
+  mnist_db:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_MULTIPLE_DATABASES=${APP_DB},${TEST_DB}
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+    volumes:
+      - ./db/:/docker-entrypoint-initdb.d
+      - ./db/sql:/docker-entrypoint-initdb.d/sql

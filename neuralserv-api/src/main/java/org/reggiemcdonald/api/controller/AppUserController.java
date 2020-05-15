@@ -4,7 +4,6 @@ import org.jboss.logging.Logger;
 import org.reggiemcdonald.api.model.api.AppUserApiModel;
 import org.reggiemcdonald.config.token.Token;
 import org.reggiemcdonald.persistence.entity.AppUserEntity;
-import org.reggiemcdonald.persistence.entity.Role;
 import org.reggiemcdonald.persistence.repo.AppUserRepository;
 import org.reggiemcdonald.persistence.repo.RoleRepository;
 import org.reggiemcdonald.service.JWTUserDetailsService;
@@ -30,9 +29,9 @@ public class AppUserController {
 
     private AuthenticationManager auth;
     private PasswordEncoder encoder;
-    protected AppUserRepository repository;
-    protected RoleRepository roleRepository;
-    protected UserDetailsService service;
+    private AppUserRepository repository;
+    private RoleRepository roleRepository;
+    private UserDetailsService service;
     private Token token;
 
     @Autowired
@@ -54,7 +53,7 @@ public class AppUserController {
                 encoder.encode(model.getPassword()),
                 roleRepository.findByName("ROLE_USER")
         );
-        AppUserEntity s = repository.save(entity);
+        repository.save(entity);
         return ResponseEntity.status(HttpStatus.CREATED).body(true);
     }
 

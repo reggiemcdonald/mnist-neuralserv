@@ -70,7 +70,7 @@ public class NumberImageController {
                 .get();
         long testSessionId = 0L; // TODO: Remove this
         NumberImageEntity entity = new NumberImageEntity(testSessionId, label, expectedLabel, imageWeights);
-        repository.save(entity);
+        entity = repository.save(entity);
         return ResponseEntity.ok(new NumberImageApiModel(entity));
     }
 
