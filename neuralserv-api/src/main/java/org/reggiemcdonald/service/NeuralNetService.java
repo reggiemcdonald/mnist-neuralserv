@@ -1,8 +1,10 @@
 package org.reggiemcdonald.service;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.reggiemcdonald.neural.feedforward.net.Network;
 import com.reggiemcdonald.neural.feedforward.res.ImageLoader;
 import com.reggiemcdonald.neural.feedforward.res.NumberImage;
+import org.reggiemcdonald.exception.NeuralNetServiceException;
 import org.reggiemcdonald.persistence.entity.TrainingSessionEntity;
 import org.reggiemcdonald.persistence.repo.NumberImageRepository;
 import org.reggiemcdonald.persistence.repo.TrainingSessionRepository;
@@ -34,7 +36,8 @@ public class NeuralNetService {
 
     private static final double PROPORTION_USER_TRAINING = 0.8;
 
-    private Network network;
+    @VisibleForTesting
+    protected Network network;
 
     private NumberImageRepository numberImageRepository;
     private TrainingSessionRepository trainingSessionRepository;
@@ -58,9 +61,9 @@ public class NeuralNetService {
     }
 
     @Async
-    public CompletableFuture<Integer> classify(double[][] imageWeights) {
+    public CompletableFuture<Integer> classify(double[][] imageWeights) throws NeuralNetServiceException {
         if (network == null)
-            throw new RuntimeException();
+            throw new NeuralNetServiceException("network is null");
         double[] output = network
                 .input(imageWeights)
                 .propagate()
@@ -70,7 +73,7 @@ public class NeuralNetService {
     }
 
     @Async
-    public CompletableFuture<Boolean> train(int epochs, int batchSize, double eta, boolean verbose) throws IOException {
+    public CompletableFuture<Boolean> train(int epochs, int batchSize, double eta, boolean verbose) {
         logger.info("Began running training protocol");
         Network network;
         try {
@@ -79,7 +82,6 @@ public class NeuralNetService {
             network = new Network(new int [] { 784, 100, 10 });
             logger.error(e.getMessage());
         }
-        logger.info("Loaded nerl file");
         List<NumberImage> trainingList = ImageLoader.load(Paths.get(TRAIN_IMAGES), Paths.get(TRAIN_LABELS));
         logger.info(String.format("Loaded %d images for training", trainingList.size()));
         List<NumberImage> testingList = ImageLoader.load(Paths.get(TEST_IMAGES), Paths.get(TEST_LABELS));

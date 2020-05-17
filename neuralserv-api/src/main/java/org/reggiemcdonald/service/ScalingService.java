@@ -1,7 +1,7 @@
 package org.reggiemcdonald.service;
 
 
-import org.reggiemcdonald.exception.ImageTooSmallToScaleException;
+import org.reggiemcdonald.exception.TooSmallToScaleException;
 import org.reggiemcdonald.exception.ScalingServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,7 @@ public class ScalingService {
 
     public CompletableFuture<double[][]> centerAndScale(double[][] original) throws ScalingServiceException {
         if (original.length < 28 || original[0].length < 28)
-            throw new ImageTooSmallToScaleException();
+            throw new TooSmallToScaleException();
         if (original.length == 28 && original[0].length == 28)
             return CompletableFuture.completedFuture(original);
         // Remove all rows and columns that are completely black

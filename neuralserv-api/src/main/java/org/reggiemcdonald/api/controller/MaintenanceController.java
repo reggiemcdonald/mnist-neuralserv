@@ -30,7 +30,7 @@ public class MaintenanceController {
             @RequestParam Integer epochs,
             @RequestParam Integer batchSize,
             @RequestParam Double eta,
-            @RequestParam Boolean verbose) throws IOException, ExecutionException, InterruptedException {
+            @RequestParam Boolean verbose) {
         service.train(epochs, batchSize, eta, verbose);
         return ResponseEntity.ok("Training has begun");
     }

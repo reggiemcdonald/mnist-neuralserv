@@ -1,12 +1,12 @@
 package org.reggiemcdonald.api.controller;
 
 import org.reggiemcdonald.api.model.api.ScaleApiModel;
-import org.reggiemcdonald.exception.ScalingServiceException;
+import org.reggiemcdonald.exception.*;
 import org.reggiemcdonald.service.ScalingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,6 +22,7 @@ import java.util.concurrent.ExecutionException;
 @RequestMapping("/scale")
 public class ScalingController {
 
+    private static final String CONTROLLER_NAME = "scale";
     private ScalingService service;
 
     Logger logger = LoggerFactory.getLogger(ScalingController.class);
@@ -33,31 +34,44 @@ public class ScalingController {
 
     @RequestMapping(value = "image-scale", method = RequestMethod.POST)
     public ResponseEntity<ScaleApiModel> scaleImage(@RequestParam(value = "file") MultipartFile file)
-            throws ExecutionException, InterruptedException, ScalingServiceException {
-        logger.info("Began image scale request");
-        ScaleApiModel model = new ScaleApiModel();
+            throws MalformedRequestException, NeuralservInternalServerException {
         try {
+            logger.info("Began image scale request");
+            ScaleApiModel model = new ScaleApiModel();
             double[][] weights = mapToArray(file);
             service.invert(weights);
             double[][] scaled = service.centerAndScale(weights).get();
             model.setImage(scaled);
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(model);
+        } catch (TooSmallToScaleException e) {
+            throw new MalformedRequestException(CONTROLLER_NAME, e.getMessage());
         } catch (IOException e) {
-            return ResponseEntity.badRequest().body(model);
+            throw new MalformedRequestException(CONTROLLER_NAME, "failed ");
+        } catch (ExecutionException | InterruptedException | ScalingServiceException e) {
+            throw new NeuralservInternalServerException();
         }
-        return ResponseEntity.ok(model);
+
     }
 
     @RequestMapping(value = "array-scale", method = RequestMethod.POST)
     public ResponseEntity<ScaleApiModel> scaleArray(@Valid @RequestBody ScaleApiModel model)
-            throws ExecutionException, InterruptedException, ScalingServiceException {
-        logger.info("Began array scale request");
-        double[][] weights = model.getImage();
-        service.invert(weights);
-        double[][] scaled = service.centerAndScale(weights).get();
-        model.setImage(scaled);
-        return ResponseEntity
-                .status(501)
-                .body(model);
+            throws MalformedRequestException, NeuralservInternalServerException {
+        try {
+            logger.info("Began array scale request");
+            double[][] weights = model.getImage();
+            service.invert(weights);
+            double[][] scaled = service.centerAndScale(weights).get();
+            model.setImage(scaled);
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(model);
+        } catch (TooSmallToScaleException e) {
+            throw new MalformedRequestException(CONTROLLER_NAME, e.getMessage());
+        } catch (ExecutionException | InterruptedException | ScalingServiceException e) {
+            throw new NeuralservInternalServerException();
+        }
     }
 
     private double[][] mapToArray(MultipartFile file) throws IOException {

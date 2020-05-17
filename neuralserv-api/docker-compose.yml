@@ -11,3 +11,14 @@ services:
     volumes:
       - ./db/:/docker-entrypoint-initdb.d
       - ./db/sql:/docker-entrypoint-initdb.d/sql
+  mnist_api:
+    image: maven:3.6.3-openjdk-8
+    ports:
+      - 8080:8080
+    volumes:
+      - ./:/app
+    working_dir: /app
+    entrypoint: ["mvn",
+                 "compile",
+                 "spring-boot:run",
+                 "-Dspring-boot.run.arguments=--POSTGRES_USER=$POSTGRES_USER,--POSTGRES_PASSWORD=$POSTGRES_PASSWORD,--APP_DB=$APP_DB,--TEST_DB=$TEST_DB"]

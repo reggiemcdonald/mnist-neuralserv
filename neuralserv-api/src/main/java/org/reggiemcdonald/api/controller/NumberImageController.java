@@ -3,6 +3,8 @@ package org.reggiemcdonald.api.controller;
 import org.reggiemcdonald.api.model.api.NumberImageApiModel;
 import org.reggiemcdonald.api.model.request.NumberImagePutRequestModel;
 import org.reggiemcdonald.api.model.request.NumberImageRequestModel;
+import org.reggiemcdonald.exception.NeuralNetServiceException;
+import org.reggiemcdonald.exception.NeuralservInternalServerException;
 import org.reggiemcdonald.service.NeuralNetService;
 import org.reggiemcdonald.exception.NumberImageNotFoundException;
 import org.reggiemcdonald.persistence.entity.NumberImageEntity;
@@ -62,16 +64,19 @@ public class NumberImageController {
     @ResponseBody
     @PreAuthorize("hasAuthority('PRIVILEGE_EDIT')")
     public ResponseEntity<NumberImageApiModel> postNumberImage(@Valid @RequestBody NumberImageRequestModel model)
-            throws Exception {
-        Integer expectedLabel = model.getExpectedLabel();
-        double[][] imageWeights = model.getImage();
-        int label = service
-                .classify(model.getImage())
-                .get();
-        long testSessionId = 0L; // TODO: Remove this
-        NumberImageEntity entity = new NumberImageEntity(testSessionId, label, expectedLabel, imageWeights);
-        entity = repository.save(entity);
-        return ResponseEntity.ok(new NumberImageApiModel(entity));
+        throws NeuralservInternalServerException {
+        try {
+            Integer expectedLabel = model.getExpectedLabel();
+            double[][] imageWeights = model.getImage();
+            int label = service
+                    .classify(model.getImage())
+                    .get();
+            NumberImageEntity entity = new NumberImageEntity(0L, label, expectedLabel, imageWeights);
+            entity = repository.save(entity);
+            return ResponseEntity.ok(new NumberImageApiModel(entity));
+        } catch (InterruptedException | ExecutionException | NeuralNetServiceException e) {
+            throw new NeuralservInternalServerException();
+        }
     }
 
     /**
@@ -89,19 +94,24 @@ public class NumberImageController {
     @PreAuthorize("hasAuthority('PRIVILEGE_EDIT')")
     @ResponseBody
     public ResponseEntity<NumberImageApiModel> putNumberImage(@Valid @RequestBody NumberImagePutRequestModel model)
-            throws NumberImageNotFoundException, InterruptedException, ExecutionException {
-        NumberImageEntity entity = repository
-                .findById(model.getId())
-                .orElseThrow(() -> new NumberImageNotFoundException(model.getId()));
+            throws NumberImageNotFoundException, NeuralservInternalServerException {
+        try {
+            NumberImageEntity entity = repository
+                    .findById(model.getId())
+                    .orElseThrow(() -> new NumberImageNotFoundException(model.getId()));
 
-        int label = service
-                .classify(model.getImage())
-                .get();
-        entity.setImageWeights(model.getImage());
-        entity.setExpectedLabel(model.getExpectedLabel());
-        entity.setLabel(label);
-        repository.save(entity);
-        return ResponseEntity.ok(new NumberImageApiModel(entity));
+            int label = service
+                    .classify(model.getImage())
+                    .get();
+            entity.setImageWeights(model.getImage());
+            entity.setExpectedLabel(model.getExpectedLabel());
+            entity.setLabel(label);
+            repository.save(entity);
+            return ResponseEntity.ok(new NumberImageApiModel(entity));
+        } catch (InterruptedException | ExecutionException | NeuralNetServiceException e) {
+            throw new NeuralservInternalServerException();
+        }
+
     }
 
     private List<NumberImageApiModel> toApiModel(List<NumberImageEntity> entities) {
