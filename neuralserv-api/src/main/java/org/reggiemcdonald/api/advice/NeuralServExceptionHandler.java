@@ -1,6 +1,6 @@
 package org.reggiemcdonald.api.advice;
 
-import org.reggiemcdonald.exception.NotFoundException;
+import org.reggiemcdonald.exception.*;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -38,9 +38,16 @@ public class NeuralServExceptionHandler {
     }
 
     @ResponseBody
-    @ExceptionHandler(IOException.class)
+    @ExceptionHandler(MalformedRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String malformedRequestExceptionHandler(MalformedRequestException e) {
+        return String.format("The request to %s failed because %s", e.getEndpoint(), e.getMessage());
+    }
+
+    @ResponseBody
+    @ExceptionHandler(NeuralservInternalServerException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public String fileReadError(IOException e) {
-        return "There was an issue processing this request.";
+    public String neuralServInternalServerException(NeuralservInternalServerException e) {
+        return "The request failed due to a server-side problem";
     }
 }

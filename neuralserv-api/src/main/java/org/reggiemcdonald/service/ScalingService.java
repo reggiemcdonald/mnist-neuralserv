@@ -1,6 +1,8 @@
 package org.reggiemcdonald.service;
 
 
+import org.reggiemcdonald.exception.TooSmallToScaleException;
+import org.reggiemcdonald.exception.ScalingServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -16,7 +18,11 @@ public class ScalingService {
     private static final Logger logger = LoggerFactory.getLogger(ScalingService.class);
 
 
-    public CompletableFuture<double[][]> centerAndScale(double[][] original) {
+    public CompletableFuture<double[][]> centerAndScale(double[][] original) throws ScalingServiceException {
+        if (original.length < 28 || original[0].length < 28)
+            throw new TooSmallToScaleException();
+        if (original.length == 28 && original[0].length == 28)
+            return CompletableFuture.completedFuture(original);
         // Remove all rows and columns that are completely black
         int minX = 0;
         int maxX = original.length - 1;

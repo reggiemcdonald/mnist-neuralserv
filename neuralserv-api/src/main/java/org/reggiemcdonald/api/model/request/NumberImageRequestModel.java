@@ -1,11 +1,15 @@
 package org.reggiemcdonald.api.model.request;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-
+@NoArgsConstructor
+@AllArgsConstructor
 public class NumberImageRequestModel {
 
     @NotNull(message = "is required")
