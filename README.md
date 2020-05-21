@@ -9,4 +9,4 @@ This project aims to make use of the MLP network that I created [here](https://g
 - [x] Endpoint for classifying images of numbers
 - [x] Endpoint for admins to start network training
 - [x] Role-based authentication
-- [ ] Full test suite
+- [x] Full test suite

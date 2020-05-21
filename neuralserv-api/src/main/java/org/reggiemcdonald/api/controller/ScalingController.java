@@ -46,10 +46,13 @@ public class ScalingController {
                     .status(HttpStatus.OK)
                     .body(model);
         } catch (TooSmallToScaleException e) {
+            logger.warn("image too small");
             throw new MalformedRequestException(CONTROLLER_NAME, e.getMessage());
         } catch (IOException e) {
+            logger.error(e.getMessage());
             throw new MalformedRequestException(CONTROLLER_NAME, "failed ");
         } catch (ExecutionException | InterruptedException | ScalingServiceException e) {
+            logger.error(e.getMessage());
             throw new NeuralservInternalServerException();
         }
 
